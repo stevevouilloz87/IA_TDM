@@ -1,661 +1,940 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L'IA pour votre Tour du Monde en Famille</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Configuration Tailwind & Styles Personnalisés -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'earth-bg': '#FDFBF7',
-                        'earth-primary': '#2C4C3B',
-                        'earth-secondary': '#82A89A',
-                        'earth-accent': '#D97757',
-                        'earth-text': '#333333',
-                        'earth-card': '#FFFFFF'
-                    },
-                    fontFamily: {
-                        sans: ['Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-                        serif: ['Georgia', 'Cambria', 'Times New Roman', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <title>L'Odyssée IA — Guide du Tour du Monde en Famille</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* Styles de base */
-        body {
-            background-color: #FDFBF7;
-            color: #333333;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --white: #FFFFFF;
+            --off-white: #F5F5F7;
+            --light-gray: #E8E8ED;
+            --mid-gray: #86868B;
+            --dark-gray: #1D1D1F;
+            --black: #000000;
+            --accent: #0071E3;
+            --accent-warm: #BF5700;
+            --accent-green: #2E7D32;
+            --card-bg: rgba(255,255,255,0.72);
+            --border: rgba(0,0,0,0.08);
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-2xl: 40px;
+            --shadow-sm: 0 2px 16px rgba(0,0,0,0.06);
+            --shadow-md: 0 8px 40px rgba(0,0,0,0.10);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.13);
+            --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-display: 'DM Serif Display', Georgia, serif;
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* Classes utilitaires pour les interactions */
-        .accordion-content {
-            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            max-height: 0;
-            opacity: 0;
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--off-white);
+            color: var(--dark-gray);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(245,245,247,0.82);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 28px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--dark-gray);
+            letter-spacing: -0.02em;
+        }
+        .nav-logo span { color: var(--accent-warm); font-style: italic; }
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--light-gray);
+            padding: 4px;
+            border-radius: 12px;
+        }
+        .nav-tab {
+            border: none;
+            background: transparent;
+            padding: 6px 16px;
+            border-radius: 9px;
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--mid-gray);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            white-space: nowrap;
+        }
+        .nav-tab.active {
+            background: var(--white);
+            color: var(--dark-gray);
+            box-shadow: var(--shadow-sm);
+        }
+        .nav-tab:hover:not(.active) { color: var(--dark-gray); }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 140px 28px 100px;
+            max-width: 1120px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent-green);
+            background: rgba(46,125,50,0.08);
+            padding: 6px 14px;
+            border-radius: 100px;
+            margin-bottom: 32px;
+        }
+        .hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--accent-green); border-radius: 50%; }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3.2rem, 7vw, 6.5rem);
+            line-height: 1.0;
+            letter-spacing: -0.03em;
+            color: var(--dark-gray);
+            margin-bottom: 12px;
+        }
+        .hero-title em {
+            font-style: italic;
+            color: var(--accent-warm);
+        }
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 300;
+            color: var(--mid-gray);
+            max-width: 580px;
+            margin: 24px auto 0;
+            line-height: 1.7;
+        }
+        .hero-subtitle strong { color: var(--dark-gray); font-weight: 500; }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 56px;
+            padding-top: 48px;
+            border-top: 1px solid var(--border);
+        }
+        .hero-stat-num {
+            font-family: var(--font-display);
+            font-size: 2.4rem;
+            color: var(--dark-gray);
+            display: block;
+        }
+        .hero-stat-label {
+            font-size: 0.78rem;
+            color: var(--mid-gray);
+            font-weight: 400;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* ── GRID ── */
+        .grid-section {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 28px 120px;
+        }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        /* ── CARD ── */
+        .tool-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), border-color 0.2s;
+            cursor: default;
+            position: relative;
             overflow: hidden;
         }
-        .accordion-content.open {
-            max-height: 1000px; /* Valeur suffisamment grande */
-            opacity: 1;
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-xl);
+            background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, transparent 60%);
+            pointer-events: none;
         }
-        
-        .tab-content {
+        .tool-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(0,0,0,0.12);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: block;
+            line-height: 1;
+        }
+        .card-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 100px;
+            margin-bottom: 12px;
+        }
+        .badge-blue { background: rgba(0,113,227,0.10); color: var(--accent); }
+        .badge-green { background: rgba(46,125,50,0.10); color: var(--accent-green); }
+        .badge-warm { background: rgba(191,87,0,0.10); color: var(--accent-warm); }
+        .badge-gray { background: rgba(0,0,0,0.06); color: var(--mid-gray); }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--dark-gray);
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        .card-desc {
+            font-size: 0.875rem;
+            color: var(--mid-gray);
+            line-height: 1.65;
+            flex-grow: 1;
+            font-weight: 400;
+        }
+        .card-usecase {
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 12px;
+            border-left: 3px solid var(--accent);
+        }
+        .card-usecase-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            margin-bottom: 4px;
+            display: block;
+        }
+        .card-usecase p {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+            line-height: 1.5;
+        }
+        .card-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+            padding: 13px 20px;
+            background: var(--dark-gray);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: all 0.2s var(--ease-out);
+            letter-spacing: 0.01em;
+        }
+        .card-link:hover {
+            background: var(--black);
+            transform: scale(1.02);
+        }
+        .card-link svg { flex-shrink: 0; transition: transform 0.2s; }
+        .card-link:hover svg { transform: translate(2px, -2px); }
+
+        /* ── CATEGORY LABELS ── */
+        .section-header {
+            margin-bottom: 48px;
+        }
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--mid-gray);
+            margin-bottom: 10px;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            letter-spacing: -0.03em;
+            color: var(--dark-gray);
+            line-height: 1.05;
+        }
+        .section-title em { font-style: italic; color: var(--accent-warm); }
+
+        /* ── PROMPTS SECTION ── */
+        .prompts-section {
+            background: var(--dark-gray);
+            padding: 100px 28px;
+            margin-top: 0;
+        }
+        .prompts-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+        .prompts-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+        .prompts-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            color: var(--white);
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+        .prompts-header h2 em { font-style: italic; color: var(--accent-warm); }
+        .prompts-header p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.45);
+            font-weight: 300;
+        }
+        .prompts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .prompt-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .prompt-card:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.15);
+        }
+        .prompt-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent-warm);
+            margin-bottom: 16px;
+        }
+        .prompt-text {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 24px;
+            font-style: italic;
+            font-weight: 300;
+        }
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: transparent;
+            color: rgba(255,255,255,0.6);
+            padding: 9px 18px;
+            border-radius: 100px;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .copy-btn.copied {
+            background: rgba(46,125,50,0.25);
+            border-color: rgba(46,125,50,0.4);
+            color: #81C784;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark-gray);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 60px 28px;
+            text-align: center;
+        }
+        .footer-quote {
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-style: italic;
+            color: rgba(255,255,255,0.5);
+            max-width: 600px;
+            margin: 0 auto 32px;
+            line-height: 1.5;
+        }
+        .footer-meta {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.25);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* ── ANIMATIONS ── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .tools-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .tools-grid { grid-template-columns: 1fr; }
+            .prompts-grid { grid-template-columns: 1fr; }
+            .hero-stats { gap: 28px; }
+            .nav-tabs { display: none; }
+            .hero { padding: 100px 20px 72px; }
+            .grid-section { padding: 0 20px 80px; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--off-white); }
+        ::-webkit-scrollbar-thumb { background: var(--light-gray); border-radius: 3px; }
+
+        /* Mobile nav for tabs */
+        .mobile-nav {
+            display: none;
+            overflow-x: auto;
+            padding: 16px 20px 0;
+            gap: 8px;
+            scrollbar-width: none;
+        }
+        .mobile-nav::-webkit-scrollbar { display: none; }
+        .mobile-nav-tab {
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+            background: var(--white);
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--mid-gray);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-body);
+        }
+        .mobile-nav-tab.active {
+            background: var(--dark-gray);
+            color: var(--white);
+            border-color: var(--dark-gray);
+        }
+        @media (max-width: 768px) {
+            .mobile-nav { display: flex; }
+        }
+
+        /* Selected tab highlight */
+        .tool-card[data-hidden="true"] {
             display: none;
         }
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* * Chart Container Styling (CRITICAL REQUIREMENT)
-         * Garantit que le graphique est responsif, centré, avec une largeur/hauteur max
-         */
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
-            padding: 1rem;
-            background: #ffffff;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
-            }
-        }
     </style>
-
-    <!-- Chosen Palette: Warm Neutrals & Earth Tones (Off-white background, Sage Green primary, Terracotta accents) -->
-    
-    <!-- Application Structure Plan: 
-         - Architecture in Single Page Layout with sticky navigation for easy exploration.
-         - Intro Section: Welcomes users and sets the context (AI as a friendly assistant).
-         - Interactive Tool Finder: A quick "I want to..." dropdown to immediately show value.
-         - Categorized Thematic Sections (Prep, Education, On-site, Memories): Uses accordion cards to prevent information overload while keeping detailed use cases and links accessible.
-         - Data Visualization: A Chart.js bar chart comparing time spent on tasks with vs without AI, demonstrating tangible benefits.
-         - Rationale: Families planning a world tour are overwhelmed. A structured, interactive guide where they can drill down into specific needs (accordion) and see clear benefits (chart) reduces cognitive load. -->
-         
-    <!-- Visualization & Content Choices: 
-         - Goal: Inform on time savings -> Viz: Grouped Bar Chart -> Interaction: Hover tooltips -> Justification: Clearly contrasts the "old way" vs "AI way" of travel planning -> Library: Chart.js (Canvas).
-         - Goal: Explore Tools -> Viz: Interactive Accordion Cards -> Interaction: Click to expand details/use cases -> Justification: Keeps UI clean while offering deep, specific text content.
-         - Goal: Quick Problem Solving -> Viz: "Assistant interactif" Dropdown -> Interaction: Select a need, get a tool recommendation -> Justification: Task-oriented navigation for immediate practical use.
-         - CONFIRMING NO SVG/Mermaid. Icons use pure Unicode characters. -->
-         
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
-<body class="font-sans antialiased text-earth-text leading-relaxed">
+<body>
 
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-earth-bg/95 backdrop-blur shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-2xl mr-2">🌍</span>
-                    <span class="font-serif font-bold text-xl text-earth-primary">IA & Tour du Monde</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="#intro" class="text-sm font-medium hover:text-earth-accent transition-colors">Accueil</a>
-                    <a href="#assistant" class="text-sm font-medium hover:text-earth-accent transition-colors">Trouver un outil</a>
-                    <a href="#categories" class="text-sm font-medium hover:text-earth-accent transition-colors">Le Guide Complet</a>
-                    <a href="#impact" class="text-sm font-medium hover:text-earth-accent transition-colors">L'Impact (Données)</a>
-                </div>
-                <!-- Mobile menu button -->
-                <div class="flex items-center md:hidden">
-                    <button id="mobile-menu-btn" class="text-earth-text hover:text-earth-primary focus:outline-none text-2xl">
-                        &#9776; <!-- Unicode Hamburger menu -->
-                    </button>
-                </div>
-            </div>
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <div class="nav-logo">L'Odyssée <span>IA</span></div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-filter="all">Tous les outils</button>
+            <button class="nav-tab" data-filter="prep">Préparation</button>
+            <button class="nav-tab" data-filter="road">En Route</button>
+            <button class="nav-tab" data-filter="edu">Éducation</button>
+            <button class="nav-tab" data-filter="memo">Souvenirs</button>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-earth-bg border-b border-gray-200">
-            <a href="#intro" class="block px-4 py-2 text-sm hover:bg-gray-50">Accueil</a>
-            <a href="#assistant" class="block px-4 py-2 text-sm hover:bg-gray-50">Trouver un outil</a>
-            <a href="#categories" class="block px-4 py-2 text-sm hover:bg-gray-50">Le Guide Complet</a>
-            <a href="#impact" class="block px-4 py-2 text-sm hover:bg-gray-50">L'Impact</a>
+    </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" style="margin-top:56px;">
+    <button class="mobile-nav-tab active" data-filter="all">Tous</button>
+    <button class="mobile-nav-tab" data-filter="prep">Préparation</button>
+    <button class="mobile-nav-tab" data-filter="road">En Route</button>
+    <button class="mobile-nav-tab" data-filter="edu">Éducation</button>
+    <button class="mobile-nav-tab" data-filter="memo">Souvenirs</button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-eyebrow">Intelligence artificielle pour voyageurs</div>
+    <h1 class="hero-title">L'Odyssée<br><em>IA</em></h1>
+    <p class="hero-subtitle">Le répertoire ultime pour les familles voyageuses. <strong>18 outils intelligents</strong> pour simplifier chaque étape de votre tour du monde.</p>
+    <div class="hero-stats">
+        <div>
+            <span class="hero-stat-num">18</span>
+            <span class="hero-stat-label">Outils sélectionnés</span>
         </div>
-    </nav>
-
-    <main class="w-full">
-        
-        <!-- Section 1: Introduction -->
-        <section id="intro" class="pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
-            <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-extrabold text-earth-primary mb-6">
-                Révolutionnez votre <span class="text-earth-accent">Tour du Monde en Famille</span>
-            </h1>
-            <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                Pas besoin d'être un expert en informatique. L'Intelligence Artificielle (IA) est aujourd'hui un assistant personnel gratuit ou peu coûteux, disponible 24h/24. Elle vous aide à préparer, budgétiser, éduquer vos enfants et surmonter les barrières de la langue.
-            </p>
-            <div class="flex justify-center gap-4">
-                <a href="#categories" class="bg-earth-primary hover:bg-[#1f3629] text-white font-medium py-3 px-6 rounded-full transition-colors shadow-lg">
-                    Découvrir le guide
-                </a>
-                <a href="#assistant" class="bg-white hover:bg-gray-50 text-earth-primary border border-earth-primary font-medium py-3 px-6 rounded-full transition-colors shadow">
-                    Essayer l'assistant
-                </a>
-            </div>
-        </section>
-
-        <!-- Section 2: Assistant Interactif (Trouver un outil) -->
-        <section id="assistant" class="py-16 bg-earth-secondary/10">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl font-serif font-bold text-earth-primary mb-4">Que voulez-vous faire ?</h2>
-                    <p class="text-gray-600">Sélectionnez votre besoin immédiat, nous vous dirons quel outil utiliser et comment.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
-                    <label for="need-selector" class="block text-sm font-medium text-gray-700 mb-2">Mon besoin actuel :</label>
-                    <select id="need-selector" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-earth-accent focus:border-earth-accent outline-none bg-gray-50 text-lg">
-                        <option value="" disabled selected>-- Choisissez une option --</option>
-                        <option value="itinerary">Créer un itinéraire complexe prenant en compte l'âge de mes enfants</option>
-                        <option value="school">Faire l'école à la maison et expliquer un concept difficile</option>
-                        <option value="translate">Traduire instantanément un menu de restaurant ou un panneau</option>
-                        <option value="budget">Optimiser mon budget et trouver des vols moins chers</option>
-                        <option value="health">Comprendre un symptôme médical bénin sur place</option>
-                    </select>
-
-                    <div id="solution-container" class="mt-8 hidden">
-                        <div class="border-l-4 border-earth-accent pl-4 py-2">
-                            <h3 id="solution-title" class="text-xl font-bold text-earth-primary mb-2"></h3>
-                            <p id="solution-tool" class="text-sm font-semibold text-earth-secondary mb-3 uppercase tracking-wide"></p>
-                            <p id="solution-desc" class="text-gray-700 mb-4"></p>
-                            <a id="solution-link" href="#" target="_blank" class="inline-flex items-center text-earth-accent font-medium hover:underline">
-                                Découvrir l'outil <span class="ml-1">&#8594;</span> <!-- Right arrow -->
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Le Guide Complet (Catégories) -->
-        <section id="categories" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-earth-primary mb-4">Le Guide Complet par Catégorie</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">
-                    Découvrez comment l'IA s'intègre à chaque étape de votre aventure. Cliquez sur les cartes pour révéler des exemples précis et des liens utiles.
-                </p>
-            </div>
-
-            <!-- Tab Navigation for Categories -->
-            <div class="flex flex-wrap justify-center gap-2 mb-12 border-b border-gray-200 pb-4">
-                <button class="tab-btn active bg-earth-primary text-white px-5 py-2 rounded-full font-medium text-sm transition-colors" data-target="cat-prep">
-                    &#9992;&#65039; Préparation & Planification
-                </button>
-                <button class="tab-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-5 py-2 rounded-full font-medium text-sm transition-colors" data-target="cat-edu">
-                    &#128218; École & Éducation
-                </button>
-                <button class="tab-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-5 py-2 rounded-full font-medium text-sm transition-colors" data-target="cat-surplace">
-                    &#128172; Sur Place & Logistique
-                </button>
-                <button class="tab-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-5 py-2 rounded-full font-medium text-sm transition-colors" data-target="cat-souvenirs">
-                    &#128248; Souvenirs & Création
-                </button>
-            </div>
-
-            <!-- Category Content: PREPARATION -->
-            <div id="cat-prep" class="tab-content active">
-                <p class="mb-8 text-lg text-gray-700 border-l-4 border-earth-secondary pl-4">
-                    La préparation est souvent l'étape la plus chronophage. L'IA permet de synthétiser des milliers de blogs de voyage en quelques secondes pour vous créer des itinéraires sur mesure et optimiser votre budget.
-                </p>
-                <div class="grid md:grid-cols-2 gap-6">
-                    
-                    <!-- Card 1 -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
-                            <div>
-                                <h3 class="font-bold text-xl text-earth-primary">Création d'itinéraires sur mesure</h3>
-                                <p class="text-sm text-gray-500 mt-1">Outils : ChatGPT (OpenAI), Claude (Anthropic), Roam Around</p>
-                            </div>
-                            <span class="text-2xl text-earth-secondary">&#43;</span> <!-- Plus symbol -->
-                        </div>
-                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
-                            <div class="p-6">
-                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Fini de lire 20 blogs pour savoir quoi faire au Pérou avec des enfants. Vous donnez vos contraintes à l'IA, elle génère le plan.</p>
-                                <div class="bg-white p-4 rounded border border-gray-200 mb-4">
-                                    <p class="text-sm font-mono text-gray-800">
-                                        <strong>Exemple de prompt (phrase à copier) :</strong><br>
-                                        "Agis comme un expert en voyage en famille. Crée-moi un itinéraire de 3 semaines au Japon pour un couple avec deux enfants de 5 et 8 ans. Inclure peu de temps de transport (max 3h par jour), des activités ludiques, des parcs, et un budget moyen. Présente cela sous forme de tableau jour par jour."
-                                    </p>
-                                </div>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="https://chat.openai.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">ChatGPT</a>
-                                    <a href="https://www.roamaround.io/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Roam Around</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 2 -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
-                            <div>
-                                <h3 class="font-bold text-xl text-earth-primary">Prévision des prix des vols</h3>
-                                <p class="text-sm text-gray-500 mt-1">Outils : Hopper, Google Flights</p>
-                            </div>
-                            <span class="text-2xl text-earth-secondary">&#43;</span>
-                        </div>
-                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
-                            <div class="p-6">
-                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Ces outils utilisent l'apprentissage automatique (Machine Learning) pour analyser des milliards de prix historiques. Ils vous disent s'il faut acheter maintenant ou attendre pour économiser sur vos billets "Tour du Monde".</p>
-                                <p class="text-sm text-gray-700 mb-4"><strong>Cas d'usage :</strong> Vous planifiez un vol Bangkok -> Sydney dans 6 mois. Hopper vous envoie une notification push au moment exact où l'IA prédit que le prix est au plus bas, vous faisant potentiellement économiser des centaines d'euros pour une famille de 4.</p>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="https://hopper.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Hopper</a>
-                                    <a href="https://flights.google.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Google Flights</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Category Content: EDUCATION -->
-            <div id="cat-edu" class="tab-content">
-                <p class="mb-8 text-lg text-gray-700 border-l-4 border-earth-secondary pl-4">
-                    Faire l'école en voyage (Worldschooling) est un défi. L'IA agit comme un tuteur personnel et un concepteur de programmes pédagogiques pour relier les leçons aux pays que vous visitez.
-                </p>
-                <div class="grid md:grid-cols-2 gap-6">
-                    
-                    <!-- Card 1 -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
-                            <div>
-                                <h3 class="font-bold text-xl text-earth-primary">Vulgarisation et leçons sur mesure</h3>
-                                <p class="text-sm text-gray-500 mt-1">Outils : ChatGPT, Perplexity AI</p>
-                            </div>
-                            <span class="text-2xl text-earth-secondary">&#43;</span>
-                        </div>
-                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
-                            <div class="p-6">
-                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Parfois, un concept de mathématiques ou d'histoire du programme officiel est difficile à expliquer pour un parent. L'IA peut l'expliquer simplement, ou mieux, l'adapter à ce que l'enfant vit !</p>
-                                <div class="bg-white p-4 rounded border border-gray-200 mb-4">
-                                    <p class="text-sm font-mono text-gray-800">
-                                        <strong>Exemple de prompt (phrase à copier) :</strong><br>
-                                        "Explique le cycle de l'eau à un enfant de 8 ans, mais utilise l'exemple de la forêt amazonienne où nous nous trouvons actuellement, avec des termes simples et une petite histoire engageante."
-                                    </p>
-                                </div>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="https://www.perplexity.ai/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Perplexity AI</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 2 -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
-                            <div>
-                                <h3 class="font-bold text-xl text-earth-primary">Apprentissage des langues interactif</h3>
-                                <p class="text-sm text-gray-500 mt-1">Outils : Duolingo Max (avec IA), Memrise</p>
-                            </div>
-                            <span class="text-2xl text-earth-secondary">&#43;</span>
-                        </div>
-                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
-                            <div class="p-6">
-                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Préparer l'arrivée dans un nouveau pays. Les nouvelles versions de ces applications intègrent l'IA générative pour créer des jeux de rôle (Roleplay). Vos enfants peuvent simuler la commande d'une glace en espagnol avant même d'arriver au Mexique.</p>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="https://fr.duolingo.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Duolingo</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Category Content: SUR PLACE -->
-            <div id="cat-surplace" class="tab-content">
-                <p class="mb-8 text-lg text-gray-700 border-l-4 border-earth-secondary pl-4">
-                    Une fois dans un pays inconnu, la barrière de la langue, l'orientation et les petits imprévus peuvent générer du stress. L'IA sur smartphone devient un traducteur et un guide instantané.
-                </p>
-                <div class="grid md:grid-cols-2 gap-6">
-                    
-                    <!-- Card 1 -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
-                            <div>
-                                <h3 class="font-bold text-xl text-earth-primary">Traduction visuelle et vocale</h3>
-                                <p class="text-sm text-gray-500 mt-1">Outils : Google Traduction (Lens), DeepL</p>
-                            </div>
-                            <span class="text-2xl text-earth-secondary">&#43;</span>
-                        </div>
-                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
-                            <div class="p-6">
-                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Vous êtes dans un supermarché en Thaïlande et un de vos enfants fait une allergie aux arachides. Vous ne savez pas lire les étiquettes.</p>
-                                <p class="text-sm text-gray-700 mb-4"><strong>Cas d'usage :</strong> Ouvrez Google Traduction, cliquez sur l'appareil photo, et pointez votre téléphone sur l'étiquette. L'IA remplace instantanément le texte thaïlandais par du français sur votre écran de smartphone.</p>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="https://translate.google.fr/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Google Translate</a>
-                                    <a href="https://www.deepl.com/fr/translator" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">DeepL</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 2 -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
-                            <div>
-                                <h3 class="font-bold text-xl text-earth-primary">Guides locaux via WhatsApp</h3>
-                                <p class="text-sm text-gray-500 mt-1">Outils : GuideGeek</p>
-                            </div>
-                            <span class="text-2xl text-earth-secondary">&#43;</span>
-                        </div>
-                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
-                            <div class="p-6">
-                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Vous n'avez pas le temps d'ouvrir une application complexe dans la rue. GuideGeek est un contact WhatsApp qui répond instantanément grâce à l'IA.</p>
-                                <p class="text-sm text-gray-700 mb-4"><strong>Cas d'usage :</strong> Vous marchez dans Rome, la pluie commence à tomber. Vous envoyez un message WhatsApp : "Trouve-moi un musée gratuit pour enfants à moins de 10 minutes à pied de ma position actuelle". L'IA répond en quelques secondes avec l'adresse et le lien Maps.</p>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="https://guidegeek.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">GuideGeek</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Category Content: SOUVENIRS -->
-            <div id="cat-souvenirs" class="tab-content">
-                <p class="mb-8 text-lg text-gray-700 border-l-4 border-earth-secondary pl-4">
-                    Trier des milliers de photos et tenir un blog de voyage peut devenir une corvée. L'IA vous aide à éditer vos images et à rédiger vos carnets de bord plus rapidement.
-                </p>
-                <div class="grid md:grid-cols-2 gap-6">
-                    
-                    <!-- Card 1 -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
-                            <div>
-                                <h3 class="font-bold text-xl text-earth-primary">Amélioration et retouche photo magique</h3>
-                                <p class="text-sm text-gray-500 mt-1">Outils : Google Photos (Gomme Magique), Canva IA</p>
-                            </div>
-                            <span class="text-2xl text-earth-secondary">&#43;</span>
-                        </div>
-                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
-                            <div class="p-6">
-                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Vous avez pris une photo parfaite de votre famille devant le Taj Mahal... mais des touristes gâchent l'arrière-plan.</p>
-                                <p class="text-sm text-gray-700 mb-4"><strong>Cas d'usage :</strong> Utilisez la fonctionnalité "Gomme Magique" (Magic Eraser). Entourez avec votre doigt les personnes indésirables, et l'IA reconstruira l'arrière-plan instantanément. Plus besoin de maîtriser Photoshop.</p>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="https://photos.google.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Google Photos</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 2 -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
-                            <div>
-                                <h3 class="font-bold text-xl text-earth-primary">Aide à la rédaction du carnet de bord</h3>
-                                <p class="text-sm text-gray-500 mt-1">Outils : Notion AI, Day One</p>
-                            </div>
-                            <span class="text-2xl text-earth-secondary">&#43;</span>
-                        </div>
-                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
-                            <div class="p-6">
-                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Vous êtes fatigués le soir, mais vous voulez mettre à jour le blog pour la famille restée en France.</p>
-                                <p class="text-sm text-gray-700 mb-4"><strong>Cas d'usage :</strong> Écrivez simplement des notes en vrac ("visite temple très beau - singes ont volé le goûter de léo - chaud - bus en retard"). Demandez à Notion AI : "Rédige un article de blog drôle de 3 paragraphes à partir de ces notes". Vous n'avez plus qu'à relire et publier.</p>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="https://www.notion.so/product/ai" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Notion AI</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </section>
-
-        <!-- Section 4: L'Impact (Data Visualization) -->
-        <section id="impact" class="py-16 bg-white border-t border-gray-200">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl font-serif font-bold text-earth-primary mb-4">L'Impact de l'IA sur votre temps</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto">
-                        Ce graphique illustre une estimation du temps passé mensuellement par une famille sur les tâches logistiques lors d'un tour du monde. L'objectif de l'IA est de réduire ce temps pour vous laisser profiter du voyage.
-                    </p>
-                </div>
-
-                <!-- Le conteneur du graphique respecte strictement les contraintes -->
-                <div class="chart-container">
-                    <canvas id="timeImpactChart"></canvas>
-                </div>
-                <p class="text-center text-xs text-gray-400 mt-4">*Données estimatives à but illustratif, basées sur des retours d'expérience de voyageurs digitaux.</p>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-[#1f3629] text-white py-8">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="mb-2">🌍 Le Guide IA pour Familles Voyageuses</p>
-            <p class="text-sm text-gray-400">Généré pour simplifier votre exploration du monde.</p>
+        <div>
+            <span class="hero-stat-num">4</span>
+            <span class="hero-stat-label">Catégories</span>
         </div>
-    </footer>
+        <div>
+            <span class="hero-stat-num">∞</span>
+            <span class="hero-stat-label">Possibilités</span>
+        </div>
+    </div>
+</section>
 
-    <!-- Logique JavaScript -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- 1. Gestion du Menu Mobile ---
-            const btn = document.getElementById('mobile-menu-btn');
-            const menu = document.getElementById('mobile-menu');
-            
-            btn.addEventListener('click', () => {
-                menu.classList.toggle('hidden');
-            });
-            
-            // Cacher le menu mobile lors d'un clic sur un lien
-            const mobileLinks = menu.querySelectorAll('a');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    menu.classList.add('hidden');
-                });
-            });
+<!-- TOOLS GRID -->
+<section class="grid-section">
+    <div class="tools-grid" id="tools-grid">
 
-            // --- 2. Gestion de l'Assistant Interactif (Tool Finder) ---
-            const solutions = {
-                itinerary: {
-                    title: "Générer un itinéraire adapté aux enfants",
-                    tool: "ChatGPT / Roam Around",
-                    desc: "Ne cherchez plus pendant des heures. Demandez simplement : 'Fais-moi un itinéraire de 15j en Thaïlande pour des enfants de 4 et 7 ans, sans trajets de plus de 3h'. L'IA générera un plan jour par jour.",
-                    link: "https://chat.openai.com/"
-                },
-                school: {
-                    title: "Expliquer un concept pour l'école",
-                    tool: "Perplexity AI / ChatGPT",
-                    desc: "Demandez à l'IA d'agir comme un professeur des écoles. 'Explique les fractions à un enfant de 8 ans en utilisant des exemples liés à notre voyage actuel (ex: partager des parts de pizza à Naples)'.",
-                    link: "https://www.perplexity.ai/"
-                },
-                translate: {
-                    title: "Traduire le monde physique autour de vous",
-                    tool: "Google Traduction (Fonctionnalité Lens)",
-                    desc: "Ouvrez l'application, sélectionnez l'appareil photo et pointez-le vers n'importe quel texte (menu, panneau, mode d'emploi d'un médicament). La traduction s'affiche en réalité augmentée sur l'écran.",
-                    link: "https://translate.google.fr/"
-                },
-                budget: {
-                    title: "Optimiser les billets d'avion",
-                    tool: "Hopper",
-                    desc: "L'IA analyse l'historique des prix. Entrez votre destination et vos dates, Hopper vous dira s'il faut réserver maintenant ou attendre que le prix baisse, avec une précision étonnante.",
-                    link: "https://hopper.com/"
-                },
-                health: {
-                    title: "Évaluer un symptôme bénin",
-                    tool: "Ada Health / ChatGPT",
-                    desc: "Avant de paniquer dans un pays étranger, décrivez les symptômes (ex: éruptions cutanées après baignade). Bien que cela ne remplace PAS un médecin, l'IA peut vous donner une première indication (ex: piqûre de puce de mer) et le vocabulaire local pour la pharmacie.",
-                    link: "https://ada.com/fr/"
-                }
-            };
+        <!-- 1. ChatGPT -->
+        <div class="tool-card fade-in" data-categories="all prep road edu memo">
+            <span class="card-icon">🤖</span>
+            <span class="card-badge badge-blue">Le Cerveau du Voyage</span>
+            <h3 class="card-title">ChatGPT</h3>
+            <p class="card-desc">L'assistant le plus polyvalent. Il planifie, traduit, conseille et aide même à gérer les petits conflits familiaux grâce à ses conseils bienveillants.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Créer un itinéraire de 3 semaines au Pérou pour enfants de 6 et 9 ans.</p>
+            </div>
+            <a href="https://chat.openai.com" target="_blank" class="card-link">
+                Ouvrir ChatGPT
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
 
-            const selector = document.getElementById('need-selector');
-            const container = document.getElementById('solution-container');
-            const sTitle = document.getElementById('solution-title');
-            const sTool = document.getElementById('solution-tool');
-            const sDesc = document.getElementById('solution-desc');
-            const sLink = document.getElementById('solution-link');
+        <!-- 2. Gemini -->
+        <div class="tool-card fade-in" data-categories="all prep road">
+            <span class="card-icon">✨</span>
+            <span class="card-badge badge-blue">Recherche Connectée</span>
+            <h3 class="card-title">Google Gemini</h3>
+            <p class="card-desc">Connecté à l'écosystème Google, il croise Maps et Flights en temps réel pour des informations ultra-fraîches sur vos destinations.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Vérifier les prix des billets et la météo historique en une seule question.</p>
+            </div>
+            <a href="https://gemini.google.com" target="_blank" class="card-link">
+                Ouvrir Gemini
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
 
-            selector.addEventListener('change', (e) => {
-                const choice = e.target.value;
-                if (solutions[choice]) {
-                    sTitle.textContent = solutions[choice].title;
-                    sTool.textContent = solutions[choice].tool;
-                    sDesc.textContent = solutions[choice].desc;
-                    sLink.href = solutions[choice].link;
-                    
-                    container.classList.remove('hidden');
-                    // Petite animation
-                    container.style.opacity = '0';
-                    setTimeout(() => {
-                        container.style.transition = 'opacity 0.4s';
-                        container.style.opacity = '1';
-                    }, 50);
-                }
-            });
+        <!-- 3. Perplexity AI -->
+        <div class="tool-card fade-in" data-categories="all road">
+            <span class="card-icon">🔍</span>
+            <span class="card-badge badge-gray">Moteur de Réponse</span>
+            <h3 class="card-title">Perplexity AI</h3>
+            <p class="card-desc">Répond à vos questions en citant ses sources. Idéal pour trouver des activités locales authentiques sans les filtres publicitaires.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Trouver un pédiatre francophone ou un parc de jeux dans une ville inconnue.</p>
+            </div>
+            <a href="https://www.perplexity.ai" target="_blank" class="card-link">
+                Ouvrir Perplexity
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
 
-            // --- 3. Gestion de la Navigation par Onglets (Catégories) ---
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
+        <!-- 4. Sherpa -->
+        <div class="tool-card fade-in" data-categories="all prep">
+            <span class="card-icon">🛂</span>
+            <span class="card-badge badge-warm">Visa & Frontières</span>
+            <h3 class="card-title">Sherpa</h3>
+            <p class="card-desc">Une IA qui simplifie la bureaucratie. Elle analyse les règles d'entrée pour chaque pays selon votre passeport, en temps réel.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Savoir si le visa pour le Laos est faisable directement à la frontière terrestre.</p>
+            </div>
+            <a href="https://www.joinsherpa.com" target="_blank" class="card-link">
+                Ouvrir Sherpa
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
 
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // Reset active states
-                    tabBtns.forEach(b => {
-                        b.classList.remove('bg-earth-primary', 'text-white');
-                        b.classList.add('bg-gray-100', 'text-gray-600');
-                    });
-                    tabContents.forEach(c => c.classList.remove('active'));
+        <!-- 5. PackPoint -->
+        <div class="tool-card fade-in" data-categories="all prep">
+            <span class="card-icon">📦</span>
+            <span class="card-badge badge-green">Optimiseur Valise</span>
+            <h3 class="card-title">PackPoint</h3>
+            <p class="card-desc">Analyse la météo et vos activités pour créer la liste de bagages parfaite, adaptée à chaque membre de la famille.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Préparer le trek au Népal sans rien oublier, tout en restant léger pour les vols internes.</p>
+            </div>
+            <a href="https://www.packpnt.com" target="_blank" class="card-link">
+                Ouvrir PackPoint
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
 
-                    // Set active state for clicked tab
-                    btn.classList.remove('bg-gray-100', 'text-gray-600');
-                    btn.classList.add('bg-earth-primary', 'text-white');
-                    
-                    const targetId = btn.getAttribute('data-target');
-                    document.getElementById(targetId).classList.add('active');
-                });
-            });
+        <!-- 6. Hopper -->
+        <div class="tool-card fade-in" data-categories="all prep">
+            <span class="card-icon">📊</span>
+            <span class="card-badge badge-blue">Prévision de Prix</span>
+            <h3 class="card-title">Hopper</h3>
+            <p class="card-desc">Prédit les prix des vols et des hôtels grâce à l'IA. Vous notifie dès que le tarif atteint son niveau optimal pour réserver.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Économiser des centaines d'euros sur les billets d'avion pour toute la famille.</p>
+            </div>
+            <a href="https://www.hopper.com" target="_blank" class="card-link">
+                Ouvrir Hopper
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
 
-            // --- 4. Gestion des Accordéons (Cartes) ---
-            const accordions = document.querySelectorAll('.accordion-trigger');
-            
-            accordions.forEach(acc => {
-                acc.addEventListener('click', () => {
-                    const content = acc.nextElementSibling;
-                    const icon = acc.querySelector('span');
-                    
-                    if (content.classList.contains('open')) {
-                        content.classList.remove('open');
-                        icon.innerHTML = '&#43;'; // Plus
-                    } else {
-                        // Optionnel : fermer les autres accordéons
-                        /*
-                        document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
-                        document.querySelectorAll('.accordion-trigger span').forEach(i => i.innerHTML = '&#43;');
-                        */
-                        content.classList.add('open');
-                        icon.innerHTML = '&#8722;'; // Minus
-                    }
-                });
-            });
+        <!-- 7. Seek -->
+        <div class="tool-card fade-in" data-categories="all edu">
+            <span class="card-icon">🌿</span>
+            <span class="card-badge badge-green">Bio-Explorateur</span>
+            <h3 class="card-title">Seek</h3>
+            <p class="card-desc">Identifie instantanément faune et flore via l'appareil photo. Transforme chaque promenade en véritable leçon de sciences naturelles.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Identifier quelle espèce de singe vous observez au Costa Rica en un clic.</p>
+            </div>
+            <a href="https://www.inaturalist.org/pages/seek_app" target="_blank" class="card-link">
+                Ouvrir Seek
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
 
-            // --- 5. Data Visualization (Chart.js) ---
-            const ctx = document.getElementById('timeImpactChart').getContext('2d');
-            
-            // Labels avec text wrapping automatique géré par Chart.js
-            const labels = ['Création Itinéraires', 'Recherche Vols/Logements', 'Préparation Cours (École)', 'Traductions & Résolutions locales'];
-            
-            const dataSansIA = [15, 20, 12, 8]; // Heures mensuelles estimées
-            const dataAvecIA = [3, 5, 4, 2];
+        <!-- 8. Character.ai -->
+        <div class="tool-card fade-in" data-categories="all edu">
+            <span class="card-icon">🕰️</span>
+            <span class="card-badge badge-warm">Tuteur Historique</span>
+            <h3 class="card-title">Character.ai</h3>
+            <p class="card-desc">Permet de discuter avec des personnages historiques. L'histoire devient un dialogue vivant et passionnant pour les enfants curieux.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Demander à un légionnaire romain comment il vivait, pendant la visite du Colisée.</p>
+            </div>
+            <a href="https://character.ai" target="_blank" class="card-link">
+                Ouvrir Character.ai
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
 
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Heures mensuelles SANS IA',
-                            data: dataSansIA,
-                            backgroundColor: '#D97757', // Terracotta
-                            borderRadius: 4
-                        },
-                        {
-                            label: 'Heures mensuelles AVEC IA',
-                            data: dataAvecIA,
-                            backgroundColor: '#82A89A', // Sage green
-                            borderRadius: 4
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false, // CRITIQUE pour respecter la hauteur du chart-container
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                font: {
-                                    family: "'Segoe UI', 'Roboto', sans-serif"
-                                }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.dataset.label + ': ' + context.parsed.y + ' heures';
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Heures passées par mois'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                // Wrapping pour les écrans plus petits
-                                callback: function(value) {
-                                    let label = this.getLabelForValue(value);
-                                    if(label.length > 15 && window.innerWidth < 768) {
-                                        return label.substr(0, 15) + '...';
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+        <!-- 9. CapCut AI -->
+        <div class="tool-card fade-in" data-categories="all memo">
+            <span class="card-icon">🎞️</span>
+            <span class="card-badge badge-blue">Montage Automatique</span>
+            <h3 class="card-title">CapCut AI</h3>
+            <p class="card-desc">L'IA sélectionne vos meilleurs plans et crée un vlog de voyage rythmé automatiquement. Un souvenir vidéo en quelques minutes.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Créer une vidéo souvenir de la semaine pour les grands-parents en 5 minutes.</p>
+            </div>
+            <a href="https://www.capcut.com" target="_blank" class="card-link">
+                Ouvrir CapCut
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+
+        <!-- 10. DeepL -->
+        <div class="tool-card fade-in" data-categories="all road">
+            <span class="card-icon">🔤</span>
+            <span class="card-badge badge-gray">Traducteur Élite</span>
+            <h3 class="card-title">DeepL</h3>
+            <p class="card-desc">Bien plus précis que les traducteurs classiques, il respecte les nuances culturelles. Indispensable pour les documents importants.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Traduire parfaitement une notice médicale ou un contrat de location locale.</p>
+            </div>
+            <a href="https://www.deepl.com" target="_blank" class="card-link">
+                Ouvrir DeepL
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+
+        <!-- 11. Remove.bg -->
+        <div class="tool-card fade-in" data-categories="all memo">
+            <span class="card-icon">✂️</span>
+            <span class="card-badge badge-gray">Détourage Instantané</span>
+            <h3 class="card-title">Remove.bg</h3>
+            <p class="card-desc">Supprime l'arrière-plan de n'importe quelle photo en une seconde. Idéal pour créer des souvenirs visuels originaux et créatifs.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Créer des photos de famille amusantes pour votre carnet de voyage numérique.</p>
+            </div>
+            <a href="https://www.remove.bg" target="_blank" class="card-link">
+                Ouvrir Remove.bg
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+
+        <!-- 12. Suno AI -->
+        <div class="tool-card fade-in" data-categories="all memo">
+            <span class="card-icon">🎵</span>
+            <span class="card-badge badge-warm">Compositeur IA</span>
+            <h3 class="card-title">Suno AI</h3>
+            <p class="card-desc">Donnez vos souvenirs en texte, l'IA compose une chanson complète avec voix et musique personnalisée sur votre aventure familiale.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Créer l'hymne officiel de votre tour du monde avec les enfants.</p>
+            </div>
+            <a href="https://suno.com" target="_blank" class="card-link">
+                Ouvrir Suno
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+
+        <!-- 13. TripIt -->
+        <div class="tool-card fade-in" data-categories="all prep road">
+            <span class="card-icon">📅</span>
+            <span class="card-badge badge-blue">Agenda de Voyage</span>
+            <h3 class="card-title">TripIt</h3>
+            <p class="card-desc">L'IA qui organise tous vos emails de réservation en un seul itinéraire interactif et chronologique. Fini les recherches dans les mails.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Retrouver son numéro de vol ou l'adresse de l'hôtel en 2 secondes, partout.</p>
+            </div>
+            <a href="https://www.tripit.com" target="_blank" class="card-link">
+                Ouvrir TripIt
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+
+        <!-- 14. Ada Health -->
+        <div class="tool-card fade-in" data-categories="all road">
+            <span class="card-icon">🩺</span>
+            <span class="card-badge badge-warm">Santé & Symptômes</span>
+            <h3 class="card-title">Ada Health</h3>
+            <p class="card-desc">Une IA médicale pour évaluer des symptômes légers loin de chez vous. Un outil rassurant pour les parents voyageant avec de jeunes enfants.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Savoir si la plaque rouge sur le bras de l'enfant nécessite une consultation urgente.</p>
+            </div>
+            <a href="https://ada.com" target="_blank" class="card-link">
+                Ouvrir Ada Health
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+
+        <!-- 15. Stellarium -->
+        <div class="tool-card fade-in" data-categories="all edu">
+            <span class="card-icon">🌌</span>
+            <span class="card-badge badge-gray">Ciel Interactif</span>
+            <h3 class="card-title">Stellarium</h3>
+            <p class="card-desc">Identifie étoiles et planètes grâce à la réalité augmentée. Magnifique pour les soirées bivouac loin de la pollution lumineuse.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Faire une leçon d'astronomie sous le ciel pur de l'hémisphère sud.</p>
+            </div>
+            <a href="https://stellarium-web.org" target="_blank" class="card-link">
+                Ouvrir Stellarium
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+
+        <!-- 16. Reflection.app -->
+        <div class="tool-card fade-in" data-categories="all memo">
+            <span class="card-icon">📓</span>
+            <span class="card-badge badge-green">Journal Guidé</span>
+            <h3 class="card-title">Reflection.app</h3>
+            <p class="card-desc">L'IA vous guide chaque soir avec des questions profondes pour transformer vos notes éparses en un vrai journal de vie et d'émotions.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Garder une trace émotionnelle forte de chaque pays traversé, sans effort.</p>
+            </div>
+            <a href="https://reflection.app" target="_blank" class="card-link">
+                Ouvrir Reflection
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+
+        <!-- 17. Khanmigo -->
+        <div class="tool-card fade-in" data-categories="all edu">
+            <span class="card-icon">🎓</span>
+            <span class="card-badge badge-blue">Tuteur Personnel</span>
+            <h3 class="card-title">Khanmigo</h3>
+            <p class="card-desc">L'IA éducative de Khan Academy. Elle ne donne pas les réponses, elle guide l'élève pas à pas comme un professeur particulier bienveillant.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Faire les devoirs de maths ou de français sans tensions entre parents et enfants.</p>
+            </div>
+            <a href="https://www.khanacademy.org/khanmigo" target="_blank" class="card-link">
+                Ouvrir Khanmigo
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+
+        <!-- 18. GuideGeek -->
+        <div class="tool-card fade-in" data-categories="all road">
+            <span class="card-icon">💬</span>
+            <span class="card-badge badge-green">IA sur WhatsApp</span>
+            <h3 class="card-title">GuideGeek</h3>
+            <p class="card-desc">Un assistant de voyage directement accessible par message. Il connaît horaires et bons plans selon votre position actuelle.</p>
+            <div class="card-usecase">
+                <span class="card-usecase-label">Cas d'usage</span>
+                <p>Demander "Où est le bureau de change le plus proche ?" par un simple SMS.</p>
+            </div>
+            <a href="https://guidegeek.com" target="_blank" class="card-link">
+                Ouvrir GuideGeek
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- PROMPTS SECTION -->
+<section class="prompts-section">
+    <div class="prompts-inner">
+        <div class="prompts-header">
+            <h2>Phrases <em>Magiques</em></h2>
+            <p>Copiez ces prompts pour obtenir des réponses parfaites de ChatGPT ou Gemini.</p>
+        </div>
+        <div class="prompts-grid">
+
+            <div class="prompt-card">
+                <span class="prompt-tag">🗺 Logistique & Arrivée</span>
+                <p class="prompt-text">"Agis comme un expert logistique. Nous sommes une famille de 4 arrivant à Bangkok un lundi à 18h. Propose-nous le transport le plus confortable et économique pour rejoindre Sukhumvit avec des valises et des enfants fatigués."</p>
+                <button class="copy-btn" onclick="copyPrompt(this)">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 4V2.5A1.5 1.5 0 015.5 1H10.5A1.5 1.5 0 0112 2.5V7.5A1.5 1.5 0 0110.5 9H9" stroke="currentColor" stroke-width="1.2"/></svg>
+                    Copier le prompt
+                </button>
+            </div>
+
+            <div class="prompt-card">
+                <span class="prompt-tag">🏛 Histoire & Culture</span>
+                <p class="prompt-text">"Explique-nous pourquoi la Muraille de Chine a été construite, mais fais-le comme si tu racontais une aventure épique à un enfant de 7 ans. Utilise des métaphores simples et pose-lui une question à la fin."</p>
+                <button class="copy-btn" onclick="copyPrompt(this)">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 4V2.5A1.5 1.5 0 015.5 1H10.5A1.5 1.5 0 0112 2.5V7.5A1.5 1.5 0 0110.5 9H9" stroke="currentColor" stroke-width="1.2"/></svg>
+                    Copier le prompt
+                </button>
+            </div>
+
+            <div class="prompt-card">
+                <span class="prompt-tag">🚌 Longs Trajets</span>
+                <p class="prompt-text">"Je dois gérer un trajet de 10h en bus avec des enfants de 5 et 8 ans dans un espace restreint. Propose-moi 5 activités créatives sans matériel, sans bruit, et adaptées à chaque âge pour passer le temps sereinement."</p>
+                <button class="copy-btn" onclick="copyPrompt(this)">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 4V2.5A1.5 1.5 0 015.5 1H10.5A1.5 1.5 0 0112 2.5V7.5A1.5 1.5 0 0110.5 9H9" stroke="currentColor" stroke-width="1.2"/></svg>
+                    Copier le prompt
+                </button>
+            </div>
+
+            <div class="prompt-card">
+                <span class="prompt-tag">🥜 Allergies & Alimentation</span>
+                <p class="prompt-text">"Mon enfant est allergique aux arachides. Liste les 5 plats thaïlandais les plus courants qui en contiennent, et écris-moi une phrase polie en thaï pour prévenir le serveur, avec la prononciation phonétique."</p>
+                <button class="copy-btn" onclick="copyPrompt(this)">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 4V2.5A1.5 1.5 0 015.5 1H10.5A1.5 1.5 0 0112 2.5V7.5A1.5 1.5 0 0110.5 9H9" stroke="currentColor" stroke-width="1.2"/></svg>
+                    Copier le prompt
+                </button>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p class="footer-quote">"Un voyage de mille lieues commence par un premier pas… et une bonne IA."</p>
+    <p class="footer-meta">L'Odyssée IA &nbsp;·&nbsp; Guide Familial &nbsp;·&nbsp; 2025</p>
+</footer>
+
+<script>
+    // ── FILTER SYSTEM ──
+    const allTabs = document.querySelectorAll('.nav-tab, .mobile-nav-tab');
+
+    function applyFilter(filter) {
+        allTabs.forEach(t => {
+            const isMatch = t.dataset.filter === filter;
+            t.classList.toggle('active', isMatch);
         });
-    </script>
+
+        document.querySelectorAll('.tool-card').forEach(card => {
+            const cats = card.dataset.categories || '';
+            const show = filter === 'all' || cats.includes(filter);
+            card.style.display = show ? 'flex' : 'none';
+            if (show) {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                requestAnimationFrame(() => {
+                    card.style.transition = 'opacity 0.45s cubic-bezier(0.22,1,0.36,1), transform 0.45s cubic-bezier(0.22,1,0.36,1)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                });
+            }
+        });
+    }
+
+    allTabs.forEach(tab => {
+        tab.addEventListener('click', () => applyFilter(tab.dataset.filter));
+    });
+
+    // ── COPY PROMPT ──
+    function copyPrompt(btn) {
+        const text = btn.closest('.prompt-card').querySelector('.prompt-text').innerText.replace(/"/g, '');
+        navigator.clipboard.writeText(text).catch(() => {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        });
+        const original = btn.innerHTML;
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 7L5 10L11 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copié !`;
+        btn.classList.add('copied');
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.classList.remove('copied');
+        }, 2500);
+    }
+
+    // ── SCROLL REVEAL ──
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => entry.target.classList.add('visible'), i * 60);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
