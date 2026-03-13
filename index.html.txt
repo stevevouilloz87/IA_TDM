@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'IA pour votre Tour du Monde en Famille</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Configuration Tailwind & Styles Personnalisés -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'earth-bg': '#FDFBF7',
+                        'earth-primary': '#2C4C3B',
+                        'earth-secondary': '#82A89A',
+                        'earth-accent': '#D97757',
+                        'earth-text': '#333333',
+                        'earth-card': '#FFFFFF'
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        serif: ['Georgia', 'Cambria', 'Times New Roman', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Styles de base */
+        body {
+            background-color: #FDFBF7;
+            color: #333333;
+        }
+
+        /* Classes utilitaires pour les interactions */
+        .accordion-content {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.open {
+            max-height: 1000px; /* Valeur suffisamment grande */
+            opacity: 1;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* * Chart Container Styling (CRITICAL REQUIREMENT)
+         * Garantit que le graphique est responsif, centré, avec une largeur/hauteur max
+         */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+            padding: 1rem;
+            background: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+
+    <!-- Chosen Palette: Warm Neutrals & Earth Tones (Off-white background, Sage Green primary, Terracotta accents) -->
+    
+    <!-- Application Structure Plan: 
+         - Architecture in Single Page Layout with sticky navigation for easy exploration.
+         - Intro Section: Welcomes users and sets the context (AI as a friendly assistant).
+         - Interactive Tool Finder: A quick "I want to..." dropdown to immediately show value.
+         - Categorized Thematic Sections (Prep, Education, On-site, Memories): Uses accordion cards to prevent information overload while keeping detailed use cases and links accessible.
+         - Data Visualization: A Chart.js bar chart comparing time spent on tasks with vs without AI, demonstrating tangible benefits.
+         - Rationale: Families planning a world tour are overwhelmed. A structured, interactive guide where they can drill down into specific needs (accordion) and see clear benefits (chart) reduces cognitive load. -->
+         
+    <!-- Visualization & Content Choices: 
+         - Goal: Inform on time savings -> Viz: Grouped Bar Chart -> Interaction: Hover tooltips -> Justification: Clearly contrasts the "old way" vs "AI way" of travel planning -> Library: Chart.js (Canvas).
+         - Goal: Explore Tools -> Viz: Interactive Accordion Cards -> Interaction: Click to expand details/use cases -> Justification: Keeps UI clean while offering deep, specific text content.
+         - Goal: Quick Problem Solving -> Viz: "Assistant interactif" Dropdown -> Interaction: Select a need, get a tool recommendation -> Justification: Task-oriented navigation for immediate practical use.
+         - CONFIRMING NO SVG/Mermaid. Icons use pure Unicode characters. -->
+         
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="font-sans antialiased text-earth-text leading-relaxed">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-earth-bg/95 backdrop-blur shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl mr-2">🌍</span>
+                    <span class="font-serif font-bold text-xl text-earth-primary">IA & Tour du Monde</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#intro" class="text-sm font-medium hover:text-earth-accent transition-colors">Accueil</a>
+                    <a href="#assistant" class="text-sm font-medium hover:text-earth-accent transition-colors">Trouver un outil</a>
+                    <a href="#categories" class="text-sm font-medium hover:text-earth-accent transition-colors">Le Guide Complet</a>
+                    <a href="#impact" class="text-sm font-medium hover:text-earth-accent transition-colors">L'Impact (Données)</a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-btn" class="text-earth-text hover:text-earth-primary focus:outline-none text-2xl">
+                        &#9776; <!-- Unicode Hamburger menu -->
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-earth-bg border-b border-gray-200">
+            <a href="#intro" class="block px-4 py-2 text-sm hover:bg-gray-50">Accueil</a>
+            <a href="#assistant" class="block px-4 py-2 text-sm hover:bg-gray-50">Trouver un outil</a>
+            <a href="#categories" class="block px-4 py-2 text-sm hover:bg-gray-50">Le Guide Complet</a>
+            <a href="#impact" class="block px-4 py-2 text-sm hover:bg-gray-50">L'Impact</a>
+        </div>
+    </nav>
+
+    <main class="w-full">
+        
+        <!-- Section 1: Introduction -->
+        <section id="intro" class="pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
+            <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-extrabold text-earth-primary mb-6">
+                Révolutionnez votre <span class="text-earth-accent">Tour du Monde en Famille</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                Pas besoin d'être un expert en informatique. L'Intelligence Artificielle (IA) est aujourd'hui un assistant personnel gratuit ou peu coûteux, disponible 24h/24. Elle vous aide à préparer, budgétiser, éduquer vos enfants et surmonter les barrières de la langue.
+            </p>
+            <div class="flex justify-center gap-4">
+                <a href="#categories" class="bg-earth-primary hover:bg-[#1f3629] text-white font-medium py-3 px-6 rounded-full transition-colors shadow-lg">
+                    Découvrir le guide
+                </a>
+                <a href="#assistant" class="bg-white hover:bg-gray-50 text-earth-primary border border-earth-primary font-medium py-3 px-6 rounded-full transition-colors shadow">
+                    Essayer l'assistant
+                </a>
+            </div>
+        </section>
+
+        <!-- Section 2: Assistant Interactif (Trouver un outil) -->
+        <section id="assistant" class="py-16 bg-earth-secondary/10">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-serif font-bold text-earth-primary mb-4">Que voulez-vous faire ?</h2>
+                    <p class="text-gray-600">Sélectionnez votre besoin immédiat, nous vous dirons quel outil utiliser et comment.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                    <label for="need-selector" class="block text-sm font-medium text-gray-700 mb-2">Mon besoin actuel :</label>
+                    <select id="need-selector" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-earth-accent focus:border-earth-accent outline-none bg-gray-50 text-lg">
+                        <option value="" disabled selected>-- Choisissez une option --</option>
+                        <option value="itinerary">Créer un itinéraire complexe prenant en compte l'âge de mes enfants</option>
+                        <option value="school">Faire l'école à la maison et expliquer un concept difficile</option>
+                        <option value="translate">Traduire instantanément un menu de restaurant ou un panneau</option>
+                        <option value="budget">Optimiser mon budget et trouver des vols moins chers</option>
+                        <option value="health">Comprendre un symptôme médical bénin sur place</option>
+                    </select>
+
+                    <div id="solution-container" class="mt-8 hidden">
+                        <div class="border-l-4 border-earth-accent pl-4 py-2">
+                            <h3 id="solution-title" class="text-xl font-bold text-earth-primary mb-2"></h3>
+                            <p id="solution-tool" class="text-sm font-semibold text-earth-secondary mb-3 uppercase tracking-wide"></p>
+                            <p id="solution-desc" class="text-gray-700 mb-4"></p>
+                            <a id="solution-link" href="#" target="_blank" class="inline-flex items-center text-earth-accent font-medium hover:underline">
+                                Découvrir l'outil <span class="ml-1">&#8594;</span> <!-- Right arrow -->
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Le Guide Complet (Catégories) -->
+        <section id="categories" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-earth-primary mb-4">Le Guide Complet par Catégorie</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Découvrez comment l'IA s'intègre à chaque étape de votre aventure. Cliquez sur les cartes pour révéler des exemples précis et des liens utiles.
+                </p>
+            </div>
+
+            <!-- Tab Navigation for Categories -->
+            <div class="flex flex-wrap justify-center gap-2 mb-12 border-b border-gray-200 pb-4">
+                <button class="tab-btn active bg-earth-primary text-white px-5 py-2 rounded-full font-medium text-sm transition-colors" data-target="cat-prep">
+                    &#9992;&#65039; Préparation & Planification
+                </button>
+                <button class="tab-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-5 py-2 rounded-full font-medium text-sm transition-colors" data-target="cat-edu">
+                    &#128218; École & Éducation
+                </button>
+                <button class="tab-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-5 py-2 rounded-full font-medium text-sm transition-colors" data-target="cat-surplace">
+                    &#128172; Sur Place & Logistique
+                </button>
+                <button class="tab-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-5 py-2 rounded-full font-medium text-sm transition-colors" data-target="cat-souvenirs">
+                    &#128248; Souvenirs & Création
+                </button>
+            </div>
+
+            <!-- Category Content: PREPARATION -->
+            <div id="cat-prep" class="tab-content active">
+                <p class="mb-8 text-lg text-gray-700 border-l-4 border-earth-secondary pl-4">
+                    La préparation est souvent l'étape la plus chronophage. L'IA permet de synthétiser des milliers de blogs de voyage en quelques secondes pour vous créer des itinéraires sur mesure et optimiser votre budget.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    
+                    <!-- Card 1 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
+                            <div>
+                                <h3 class="font-bold text-xl text-earth-primary">Création d'itinéraires sur mesure</h3>
+                                <p class="text-sm text-gray-500 mt-1">Outils : ChatGPT (OpenAI), Claude (Anthropic), Roam Around</p>
+                            </div>
+                            <span class="text-2xl text-earth-secondary">&#43;</span> <!-- Plus symbol -->
+                        </div>
+                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
+                            <div class="p-6">
+                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Fini de lire 20 blogs pour savoir quoi faire au Pérou avec des enfants. Vous donnez vos contraintes à l'IA, elle génère le plan.</p>
+                                <div class="bg-white p-4 rounded border border-gray-200 mb-4">
+                                    <p class="text-sm font-mono text-gray-800">
+                                        <strong>Exemple de prompt (phrase à copier) :</strong><br>
+                                        "Agis comme un expert en voyage en famille. Crée-moi un itinéraire de 3 semaines au Japon pour un couple avec deux enfants de 5 et 8 ans. Inclure peu de temps de transport (max 3h par jour), des activités ludiques, des parcs, et un budget moyen. Présente cela sous forme de tableau jour par jour."
+                                    </p>
+                                </div>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="https://chat.openai.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">ChatGPT</a>
+                                    <a href="https://www.roamaround.io/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Roam Around</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
+                            <div>
+                                <h3 class="font-bold text-xl text-earth-primary">Prévision des prix des vols</h3>
+                                <p class="text-sm text-gray-500 mt-1">Outils : Hopper, Google Flights</p>
+                            </div>
+                            <span class="text-2xl text-earth-secondary">&#43;</span>
+                        </div>
+                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
+                            <div class="p-6">
+                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Ces outils utilisent l'apprentissage automatique (Machine Learning) pour analyser des milliards de prix historiques. Ils vous disent s'il faut acheter maintenant ou attendre pour économiser sur vos billets "Tour du Monde".</p>
+                                <p class="text-sm text-gray-700 mb-4"><strong>Cas d'usage :</strong> Vous planifiez un vol Bangkok -> Sydney dans 6 mois. Hopper vous envoie une notification push au moment exact où l'IA prédit que le prix est au plus bas, vous faisant potentiellement économiser des centaines d'euros pour une famille de 4.</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="https://hopper.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Hopper</a>
+                                    <a href="https://flights.google.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Google Flights</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Category Content: EDUCATION -->
+            <div id="cat-edu" class="tab-content">
+                <p class="mb-8 text-lg text-gray-700 border-l-4 border-earth-secondary pl-4">
+                    Faire l'école en voyage (Worldschooling) est un défi. L'IA agit comme un tuteur personnel et un concepteur de programmes pédagogiques pour relier les leçons aux pays que vous visitez.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    
+                    <!-- Card 1 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
+                            <div>
+                                <h3 class="font-bold text-xl text-earth-primary">Vulgarisation et leçons sur mesure</h3>
+                                <p class="text-sm text-gray-500 mt-1">Outils : ChatGPT, Perplexity AI</p>
+                            </div>
+                            <span class="text-2xl text-earth-secondary">&#43;</span>
+                        </div>
+                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
+                            <div class="p-6">
+                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Parfois, un concept de mathématiques ou d'histoire du programme officiel est difficile à expliquer pour un parent. L'IA peut l'expliquer simplement, ou mieux, l'adapter à ce que l'enfant vit !</p>
+                                <div class="bg-white p-4 rounded border border-gray-200 mb-4">
+                                    <p class="text-sm font-mono text-gray-800">
+                                        <strong>Exemple de prompt (phrase à copier) :</strong><br>
+                                        "Explique le cycle de l'eau à un enfant de 8 ans, mais utilise l'exemple de la forêt amazonienne où nous nous trouvons actuellement, avec des termes simples et une petite histoire engageante."
+                                    </p>
+                                </div>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="https://www.perplexity.ai/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Perplexity AI</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
+                            <div>
+                                <h3 class="font-bold text-xl text-earth-primary">Apprentissage des langues interactif</h3>
+                                <p class="text-sm text-gray-500 mt-1">Outils : Duolingo Max (avec IA), Memrise</p>
+                            </div>
+                            <span class="text-2xl text-earth-secondary">&#43;</span>
+                        </div>
+                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
+                            <div class="p-6">
+                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Préparer l'arrivée dans un nouveau pays. Les nouvelles versions de ces applications intègrent l'IA générative pour créer des jeux de rôle (Roleplay). Vos enfants peuvent simuler la commande d'une glace en espagnol avant même d'arriver au Mexique.</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="https://fr.duolingo.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Duolingo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Category Content: SUR PLACE -->
+            <div id="cat-surplace" class="tab-content">
+                <p class="mb-8 text-lg text-gray-700 border-l-4 border-earth-secondary pl-4">
+                    Une fois dans un pays inconnu, la barrière de la langue, l'orientation et les petits imprévus peuvent générer du stress. L'IA sur smartphone devient un traducteur et un guide instantané.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    
+                    <!-- Card 1 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
+                            <div>
+                                <h3 class="font-bold text-xl text-earth-primary">Traduction visuelle et vocale</h3>
+                                <p class="text-sm text-gray-500 mt-1">Outils : Google Traduction (Lens), DeepL</p>
+                            </div>
+                            <span class="text-2xl text-earth-secondary">&#43;</span>
+                        </div>
+                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
+                            <div class="p-6">
+                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Vous êtes dans un supermarché en Thaïlande et un de vos enfants fait une allergie aux arachides. Vous ne savez pas lire les étiquettes.</p>
+                                <p class="text-sm text-gray-700 mb-4"><strong>Cas d'usage :</strong> Ouvrez Google Traduction, cliquez sur l'appareil photo, et pointez votre téléphone sur l'étiquette. L'IA remplace instantanément le texte thaïlandais par du français sur votre écran de smartphone.</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="https://translate.google.fr/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Google Translate</a>
+                                    <a href="https://www.deepl.com/fr/translator" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">DeepL</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
+                            <div>
+                                <h3 class="font-bold text-xl text-earth-primary">Guides locaux via WhatsApp</h3>
+                                <p class="text-sm text-gray-500 mt-1">Outils : GuideGeek</p>
+                            </div>
+                            <span class="text-2xl text-earth-secondary">&#43;</span>
+                        </div>
+                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
+                            <div class="p-6">
+                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Vous n'avez pas le temps d'ouvrir une application complexe dans la rue. GuideGeek est un contact WhatsApp qui répond instantanément grâce à l'IA.</p>
+                                <p class="text-sm text-gray-700 mb-4"><strong>Cas d'usage :</strong> Vous marchez dans Rome, la pluie commence à tomber. Vous envoyez un message WhatsApp : "Trouve-moi un musée gratuit pour enfants à moins de 10 minutes à pied de ma position actuelle". L'IA répond en quelques secondes avec l'adresse et le lien Maps.</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="https://guidegeek.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">GuideGeek</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Category Content: SOUVENIRS -->
+            <div id="cat-souvenirs" class="tab-content">
+                <p class="mb-8 text-lg text-gray-700 border-l-4 border-earth-secondary pl-4">
+                    Trier des milliers de photos et tenir un blog de voyage peut devenir une corvée. L'IA vous aide à éditer vos images et à rédiger vos carnets de bord plus rapidement.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    
+                    <!-- Card 1 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
+                            <div>
+                                <h3 class="font-bold text-xl text-earth-primary">Amélioration et retouche photo magique</h3>
+                                <p class="text-sm text-gray-500 mt-1">Outils : Google Photos (Gomme Magique), Canva IA</p>
+                            </div>
+                            <span class="text-2xl text-earth-secondary">&#43;</span>
+                        </div>
+                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
+                            <div class="p-6">
+                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Vous avez pris une photo parfaite de votre famille devant le Taj Mahal... mais des touristes gâchent l'arrière-plan.</p>
+                                <p class="text-sm text-gray-700 mb-4"><strong>Cas d'usage :</strong> Utilisez la fonctionnalité "Gomme Magique" (Magic Eraser). Entourez avec votre doigt les personnes indésirables, et l'IA reconstruira l'arrière-plan instantanément. Plus besoin de maîtriser Photoshop.</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="https://photos.google.com/" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Google Photos</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 cursor-pointer accordion-trigger flex justify-between items-center hover:bg-gray-50 transition-colors">
+                            <div>
+                                <h3 class="font-bold text-xl text-earth-primary">Aide à la rédaction du carnet de bord</h3>
+                                <p class="text-sm text-gray-500 mt-1">Outils : Notion AI, Day One</p>
+                            </div>
+                            <span class="text-2xl text-earth-secondary">&#43;</span>
+                        </div>
+                        <div class="accordion-content bg-gray-50 border-t border-gray-100">
+                            <div class="p-6">
+                                <p class="mb-4 text-gray-700"><strong>Comment ça aide :</strong> Vous êtes fatigués le soir, mais vous voulez mettre à jour le blog pour la famille restée en France.</p>
+                                <p class="text-sm text-gray-700 mb-4"><strong>Cas d'usage :</strong> Écrivez simplement des notes en vrac ("visite temple très beau - singes ont volé le goûter de léo - chaud - bus en retard"). Demandez à Notion AI : "Rédige un article de blog drôle de 3 paragraphes à partir de ces notes". Vous n'avez plus qu'à relire et publier.</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="https://www.notion.so/product/ai" target="_blank" class="text-sm bg-earth-secondary/20 text-earth-primary px-3 py-1 rounded hover:bg-earth-secondary/40 transition">Notion AI</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Section 4: L'Impact (Data Visualization) -->
+        <section id="impact" class="py-16 bg-white border-t border-gray-200">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-serif font-bold text-earth-primary mb-4">L'Impact de l'IA sur votre temps</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        Ce graphique illustre une estimation du temps passé mensuellement par une famille sur les tâches logistiques lors d'un tour du monde. L'objectif de l'IA est de réduire ce temps pour vous laisser profiter du voyage.
+                    </p>
+                </div>
+
+                <!-- Le conteneur du graphique respecte strictement les contraintes -->
+                <div class="chart-container">
+                    <canvas id="timeImpactChart"></canvas>
+                </div>
+                <p class="text-center text-xs text-gray-400 mt-4">*Données estimatives à but illustratif, basées sur des retours d'expérience de voyageurs digitaux.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#1f3629] text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="mb-2">🌍 Le Guide IA pour Familles Voyageuses</p>
+            <p class="text-sm text-gray-400">Généré pour simplifier votre exploration du monde.</p>
+        </div>
+    </footer>
+
+    <!-- Logique JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Gestion du Menu Mobile ---
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+            
+            // Cacher le menu mobile lors d'un clic sur un lien
+            const mobileLinks = menu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.add('hidden');
+                });
+            });
+
+            // --- 2. Gestion de l'Assistant Interactif (Tool Finder) ---
+            const solutions = {
+                itinerary: {
+                    title: "Générer un itinéraire adapté aux enfants",
+                    tool: "ChatGPT / Roam Around",
+                    desc: "Ne cherchez plus pendant des heures. Demandez simplement : 'Fais-moi un itinéraire de 15j en Thaïlande pour des enfants de 4 et 7 ans, sans trajets de plus de 3h'. L'IA générera un plan jour par jour.",
+                    link: "https://chat.openai.com/"
+                },
+                school: {
+                    title: "Expliquer un concept pour l'école",
+                    tool: "Perplexity AI / ChatGPT",
+                    desc: "Demandez à l'IA d'agir comme un professeur des écoles. 'Explique les fractions à un enfant de 8 ans en utilisant des exemples liés à notre voyage actuel (ex: partager des parts de pizza à Naples)'.",
+                    link: "https://www.perplexity.ai/"
+                },
+                translate: {
+                    title: "Traduire le monde physique autour de vous",
+                    tool: "Google Traduction (Fonctionnalité Lens)",
+                    desc: "Ouvrez l'application, sélectionnez l'appareil photo et pointez-le vers n'importe quel texte (menu, panneau, mode d'emploi d'un médicament). La traduction s'affiche en réalité augmentée sur l'écran.",
+                    link: "https://translate.google.fr/"
+                },
+                budget: {
+                    title: "Optimiser les billets d'avion",
+                    tool: "Hopper",
+                    desc: "L'IA analyse l'historique des prix. Entrez votre destination et vos dates, Hopper vous dira s'il faut réserver maintenant ou attendre que le prix baisse, avec une précision étonnante.",
+                    link: "https://hopper.com/"
+                },
+                health: {
+                    title: "Évaluer un symptôme bénin",
+                    tool: "Ada Health / ChatGPT",
+                    desc: "Avant de paniquer dans un pays étranger, décrivez les symptômes (ex: éruptions cutanées après baignade). Bien que cela ne remplace PAS un médecin, l'IA peut vous donner une première indication (ex: piqûre de puce de mer) et le vocabulaire local pour la pharmacie.",
+                    link: "https://ada.com/fr/"
+                }
+            };
+
+            const selector = document.getElementById('need-selector');
+            const container = document.getElementById('solution-container');
+            const sTitle = document.getElementById('solution-title');
+            const sTool = document.getElementById('solution-tool');
+            const sDesc = document.getElementById('solution-desc');
+            const sLink = document.getElementById('solution-link');
+
+            selector.addEventListener('change', (e) => {
+                const choice = e.target.value;
+                if (solutions[choice]) {
+                    sTitle.textContent = solutions[choice].title;
+                    sTool.textContent = solutions[choice].tool;
+                    sDesc.textContent = solutions[choice].desc;
+                    sLink.href = solutions[choice].link;
+                    
+                    container.classList.remove('hidden');
+                    // Petite animation
+                    container.style.opacity = '0';
+                    setTimeout(() => {
+                        container.style.transition = 'opacity 0.4s';
+                        container.style.opacity = '1';
+                    }, 50);
+                }
+            });
+
+            // --- 3. Gestion de la Navigation par Onglets (Catégories) ---
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Reset active states
+                    tabBtns.forEach(b => {
+                        b.classList.remove('bg-earth-primary', 'text-white');
+                        b.classList.add('bg-gray-100', 'text-gray-600');
+                    });
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    // Set active state for clicked tab
+                    btn.classList.remove('bg-gray-100', 'text-gray-600');
+                    btn.classList.add('bg-earth-primary', 'text-white');
+                    
+                    const targetId = btn.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            // --- 4. Gestion des Accordéons (Cartes) ---
+            const accordions = document.querySelectorAll('.accordion-trigger');
+            
+            accordions.forEach(acc => {
+                acc.addEventListener('click', () => {
+                    const content = acc.nextElementSibling;
+                    const icon = acc.querySelector('span');
+                    
+                    if (content.classList.contains('open')) {
+                        content.classList.remove('open');
+                        icon.innerHTML = '&#43;'; // Plus
+                    } else {
+                        // Optionnel : fermer les autres accordéons
+                        /*
+                        document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+                        document.querySelectorAll('.accordion-trigger span').forEach(i => i.innerHTML = '&#43;');
+                        */
+                        content.classList.add('open');
+                        icon.innerHTML = '&#8722;'; // Minus
+                    }
+                });
+            });
+
+            // --- 5. Data Visualization (Chart.js) ---
+            const ctx = document.getElementById('timeImpactChart').getContext('2d');
+            
+            // Labels avec text wrapping automatique géré par Chart.js
+            const labels = ['Création Itinéraires', 'Recherche Vols/Logements', 'Préparation Cours (École)', 'Traductions & Résolutions locales'];
+            
+            const dataSansIA = [15, 20, 12, 8]; // Heures mensuelles estimées
+            const dataAvecIA = [3, 5, 4, 2];
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Heures mensuelles SANS IA',
+                            data: dataSansIA,
+                            backgroundColor: '#D97757', // Terracotta
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Heures mensuelles AVEC IA',
+                            data: dataAvecIA,
+                            backgroundColor: '#82A89A', // Sage green
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // CRITIQUE pour respecter la hauteur du chart-container
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'Segoe UI', 'Roboto', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + ' heures';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Heures passées par mois'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                // Wrapping pour les écrans plus petits
+                                callback: function(value) {
+                                    let label = this.getLabelForValue(value);
+                                    if(label.length > 15 && window.innerWidth < 768) {
+                                        return label.substr(0, 15) + '...';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
