@@ -476,6 +476,217 @@
         .tool-card[data-hidden="true"] {
             display: none;
         }
+        /* ── PAGE SYSTEM ── */
+        .nav-pages {
+            display: flex;
+            gap: 4px;
+            background: var(--light-gray);
+            padding: 4px;
+            border-radius: 12px;
+        }
+        .nav-page {
+            border: none;
+            background: transparent;
+            padding: 7px 18px;
+            border-radius: 9px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--mid-gray);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            white-space: nowrap;
+        }
+        .nav-page.active {
+            background: var(--white);
+            color: var(--dark-gray);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ── CONTINENT TABS ── */
+        .continent-nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 56px;
+            z-index: 90;
+        }
+        .continent-nav-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 28px;
+            display: flex;
+            gap: 0;
+        }
+        .continent-tab {
+            border: none;
+            background: transparent;
+            padding: 18px 24px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--mid-gray);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .continent-tab.active {
+            color: var(--dark-gray);
+            border-bottom-color: var(--dark-gray);
+        }
+        .continent-tab:hover:not(.active) { color: var(--dark-gray); }
+
+        /* ── COUNTRY HERO ── */
+        .country-hero { padding: 80px 28px 48px; }
+        .country-hero-inner { max-width: 1120px; margin: 0 auto; }
+
+        /* ── COUNTRIES WRAPPER ── */
+        .countries-wrapper {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 32px 28px 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ── COUNTRY BLOCK ── */
+        .country-block {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+        .country-block.tip-block {
+            background: linear-gradient(135deg, #1D1D1F 0%, #2d2d2f 100%);
+            border-color: transparent;
+        }
+        .country-block.tip-block .country-name,
+        .country-block.tip-block .country-desc { color: rgba(255,255,255,0.9); }
+        .country-block.tip-block .country-desc { color: rgba(255,255,255,0.5); }
+        .country-block.tip-block .app-cat-label { color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.08); }
+        .country-block.tip-block .app-item { border-color: rgba(255,255,255,0.06); }
+        .country-block.tip-block .app-item-name { color: rgba(255,255,255,0.9); }
+        .country-block.tip-block .app-item-desc { color: rgba(255,255,255,0.45); }
+        .country-block.tip-block .app-item-btn {
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
+            border-color: rgba(255,255,255,0.12);
+        }
+        .country-block.tip-block .app-item-btn:hover {
+            background: rgba(255,255,255,0.15);
+            color: var(--white);
+        }
+        .country-block.tip-block .country-header { border-color: rgba(255,255,255,0.08); }
+
+        .country-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 28px 32px;
+            border-bottom: 1px solid var(--border);
+        }
+        .country-flag {
+            font-size: 2.8rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .country-name {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            letter-spacing: -0.02em;
+            color: var(--dark-gray);
+            margin-bottom: 4px;
+        }
+        .country-desc {
+            font-size: 0.82rem;
+            color: var(--mid-gray);
+            font-weight: 400;
+        }
+
+        /* ── APP CATEGORIES GRID ── */
+        .app-categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0;
+        }
+        .app-cat-group {
+            padding: 24px 32px;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .app-cat-group:last-child { border-right: none; }
+        .app-cat-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--mid-gray);
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+            display: block;
+        }
+        .app-list { display: flex; flex-direction: column; gap: 12px; }
+
+        /* ── APP ITEM ── */
+        .app-item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .app-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .app-item-info { flex: 1; min-width: 0; }
+        .app-item-name {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 4px;
+        }
+        .app-item-desc {
+            font-size: 0.78rem;
+            color: var(--mid-gray);
+            line-height: 1.5;
+            display: block;
+        }
+        .app-item-btn {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 14px;
+            background: var(--off-white);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.18s var(--ease-out);
+            margin-top: 2px;
+        }
+        .app-item-btn:hover {
+            background: var(--dark-gray);
+            color: var(--white);
+            border-color: var(--dark-gray);
+            transform: scale(1.04);
+        }
+
+        @media (max-width: 768px) {
+            .country-header { padding: 20px; gap: 14px; }
+            .country-flag { font-size: 2.2rem; }
+            .app-cat-group { padding: 18px 20px; }
+            .app-categories-grid { grid-template-columns: 1fr; }
+            .app-cat-group { border-right: none; }
+            .countries-wrapper { padding: 16px 16px 80px; gap: 14px; }
+            .continent-nav-inner { overflow-x: auto; scrollbar-width: none; }
+            .continent-nav-inner::-webkit-scrollbar { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -484,24 +695,21 @@
 <nav>
     <div class="nav-inner">
         <div class="nav-logo">L'Odyssée <span>IA</span></div>
-        <div class="nav-tabs">
-            <button class="nav-tab active" data-filter="all">Tous les outils</button>
-            <button class="nav-tab" data-filter="prep">Préparation</button>
-            <button class="nav-tab" data-filter="road">En Route</button>
-            <button class="nav-tab" data-filter="edu">Éducation</button>
-            <button class="nav-tab" data-filter="memo">Souvenirs</button>
+        <div class="nav-pages">
+            <button class="nav-page active" data-page="tools">🛠 Outils IA</button>
+            <button class="nav-page" data-page="countries">🌍 Par Pays</button>
         </div>
     </div>
 </nav>
 
-<!-- MOBILE NAV -->
-<div class="mobile-nav" style="margin-top:56px;">
-    <button class="mobile-nav-tab active" data-filter="all">Tous</button>
-    <button class="mobile-nav-tab" data-filter="prep">Préparation</button>
-    <button class="mobile-nav-tab" data-filter="road">En Route</button>
-    <button class="mobile-nav-tab" data-filter="edu">Éducation</button>
-    <button class="mobile-nav-tab" data-filter="memo">Souvenirs</button>
+<!-- MOBILE TOP NAV -->
+<div class="mobile-nav" style="margin-top:56px; padding-bottom:16px; border-bottom:1px solid var(--border);">
+    <button class="mobile-nav-tab active" data-page="tools">🛠 Outils IA</button>
+    <button class="mobile-nav-tab" data-page="countries">🌍 Par Pays</button>
 </div>
+
+<!-- PAGE: OUTILS IA -->
+<div id="page-tools" class="page-section">
 
 <!-- HERO -->
 <section class="hero">
@@ -523,6 +731,17 @@
         </div>
     </div>
 </section>
+
+<!-- TOOLS FILTER NAV -->
+<div style="background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:56px; z-index:90;">
+    <div style="max-width:1120px; margin:0 auto; padding:0 28px; display:flex; gap:0; overflow-x:auto; scrollbar-width:none;">
+        <button onclick="applyFilter('all');setFilterActive(this)" class="continent-tab active">Tous les outils</button>
+        <button onclick="applyFilter('prep');setFilterActive(this)" class="continent-tab">🎒 Préparation</button>
+        <button onclick="applyFilter('road');setFilterActive(this)" class="continent-tab">🛣️ En Route</button>
+        <button onclick="applyFilter('edu');setFilterActive(this)" class="continent-tab">🏫 Éducation</button>
+        <button onclick="applyFilter('memo');setFilterActive(this)" class="continent-tab">✨ Souvenirs</button>
+    </div>
+</div>
 
 <!-- TOOLS GRID -->
 <section class="grid-section">
@@ -947,7 +1166,911 @@
     </div>
 </section>
 
-<!-- PROMPTS SECTION -->
+</div><!-- /page-tools -->
+
+<!-- PAGE: PAR PAYS -->
+<div id="page-countries" class="page-section" style="display:none;">
+
+<section class="country-hero">
+    <div class="country-hero-inner">
+        <div class="hero-eyebrow">Applications locales essentielles</div>
+        <h1 class="hero-title" style="font-size:clamp(2.4rem,5vw,4.5rem);">Apps <em>Par Pays</em></h1>
+        <p class="hero-subtitle">Les meilleures applications locales pour chaque destination — transport, sécurité, paiement et plus.</p>
+    </div>
+</section>
+
+<!-- CONTINENT TABS -->
+<div class="continent-nav">
+    <div class="continent-nav-inner">
+        <button class="continent-tab active" data-continent="latam">🌎 Amérique Latine</button>
+        <button class="continent-tab" data-continent="northam">🇺🇸 Amérique du Nord</button>
+    </div>
+</div>
+
+<!-- LATAM -->
+<div id="continent-latam" class="continent-section">
+<div class="countries-wrapper">
+
+    <!-- MEXIQUE -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇲🇽</span>
+            <div>
+                <h2 class="country-name">Mexique</h2>
+                <p class="country-desc">4 applications essentielles pour voyager sereinement au pays des mariachis</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 Transport & VTC</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">DiDi Rider</span>
+                            <span class="app-item-desc">Souvent plus présent qu'Uber dans les provinces. Trajets urbains sécurisés avec prix fixé avant départ.</span>
+                        </div>
+                        <a href="https://web.didiglobal.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">ADO Bus App</span>
+                            <span class="app-item-desc">La référence pour les bus longue distance. Billets en ligne souvent moins chers qu'au terminal.</span>
+                        </div>
+                        <a href="https://www.ado.com.mx" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🛡 Sécurité & Urgences</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">GrinGO</span>
+                            <span class="app-item-desc">Concierge digital pour touristes : services de secours, assistance consulaire et zones de danger en temps réel.</span>
+                        </div>
+                        <a href="https://gringoapp.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Guest Assist</span>
+                            <span class="app-item-desc">Vitale pour Cancún, Tulum et la Riviera Maya. Contactez les urgences et signalez des incidents en un clic.</span>
+                        </div>
+                        <a href="https://play.google.com/store/search?q=guest+assist+quintana+roo" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BELIZE -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇧🇿</span>
+            <div>
+                <h2 class="country-name">Belize</h2>
+                <p class="country-desc">2 applications pour naviguer entre jungle et cayes</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">✈️ Transport Interne</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Tropic Air</span>
+                            <span class="app-item-desc">Réservez vos sauts de puce en avion entre Belize City, les îles (Caye Caulker, San Pedro) et la jungle.</span>
+                        </div>
+                        <a href="https://www.tropicair.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🏝 Guide Local</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">San Pedro Scoop</span>
+                            <span class="app-item-desc">Guide ultra-local pour Ambergris Caye. Événements, meilleurs spots de snorkeling et promos restaurants.</span>
+                        </div>
+                        <a href="https://sanpedroscoop.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GUATEMALA -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇬🇹</span>
+            <div>
+                <h2 class="country-name">Guatemala</h2>
+                <p class="country-desc">2 applications pour les navettes et déplacements locaux</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚌 Navettes Touristiques</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">GuateGo</span>
+                            <span class="app-item-desc">La référence pour réserver des navettes entre Antigua, le Lac Atitlán, Semuc Champey et Tikal.</span>
+                        </div>
+                        <a href="https://guatego.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 VTC</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">InDrive</span>
+                            <span class="app-item-desc">Concept unique : vous proposez votre prix et les chauffeurs acceptent ou contre-offrent. Très populaire.</span>
+                        </div>
+                        <a href="https://indrive.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HONDURAS & SALVADOR -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇭🇳🇸🇻</span>
+            <div>
+                <h2 class="country-name">Honduras & Salvador</h2>
+                <p class="country-desc">2 super-apps d'Amérique Centrale pour tous les besoins</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">📱 Super-App</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Hugo</span>
+                            <span class="app-item-desc">Tout-en-un : livraison de repas, de médicaments et VTC sécurisé à San Salvador et Tegucigalpa.</span>
+                        </div>
+                        <a href="https://hugo.delivery" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">TUDO App</span>
+                            <span class="app-item-desc">Application locale polyvalente pour payer ses services et accéder à des transports privés sécurisés au Salvador.</span>
+                        </div>
+                        <a href="https://tudo.sv" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NICARAGUA -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇳🇮</span>
+            <div>
+                <h2 class="country-name">Nicaragua</h2>
+                <p class="country-desc">VTC locaux et bus internationaux fiables</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 VTC</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Aventón</span>
+                            <span class="app-item-desc">L'alternative locale à Uber pour Managua. Plus fiable que de héler un taxi dans la rue la nuit.</span>
+                        </div>
+                        <a href="https://aventon.tech" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚌 Bus Internationaux</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Nicabus</span>
+                            <span class="app-item-desc">Trajets internationaux confortables vers le Costa Rica et le Salvador. Réservation en ligne disponible.</span>
+                        </div>
+                        <a href="https://nicabus.com.ni" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COSTA RICA -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇨🇷</span>
+            <div>
+                <h2 class="country-name">Costa Rica</h2>
+                <p class="country-desc">Navigation indispensable dans un pays sans adresses</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚌 Bus Locaux</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Yo Viajo</span>
+                            <span class="app-item-desc">La meilleure option pour comprendre le réseau complexe de bus publics et consulter les horaires.</span>
+                        </div>
+                        <a href="https://yoviajo.cr" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">La Terminal</span>
+                            <span class="app-item-desc">Spécialisée dans les liaisons inter-villes. Complémentaire à Yo Viajo pour les longs trajets.</span>
+                        </div>
+                        <a href="https://laterminal.co.cr" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🗺 Navigation</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Waze</span>
+                            <span class="app-item-desc">Au Costa Rica, les adresses n'existent quasiment pas. Tout le monde utilise Waze, même les locaux.</span>
+                        </div>
+                        <a href="https://www.waze.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANAMA -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇵🇦</span>
+            <div>
+                <h2 class="country-name">Panama</h2>
+                <p class="country-desc">Métro moderne et VTC premium dans la capitale</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚇 Transport Urbain</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">MiBus Panama</span>
+                            <span class="app-item-desc">Application officielle pour naviguer le réseau de bus de Panama City avec arrivées en temps réel.</span>
+                        </div>
+                        <a href="https://mibus.com.pa" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Metro de Panamá</span>
+                            <span class="app-item-desc">Planifiez vos trajets sur les lignes de métro (le plus moderne d'Amérique Centrale) pour éviter les bouchons.</span>
+                        </div>
+                        <a href="https://www.metro.com.pa" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 VTC Premium</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Cabify</span>
+                            <span class="app-item-desc">Option VTC premium et très sécurisée à Panama City. Idéale pour les trajets vers l'aéroport.</span>
+                        </div>
+                        <a href="https://cabify.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COLOMBIE -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇨🇴</span>
+            <div>
+                <h2 class="country-name">Colombie</h2>
+                <p class="country-desc">La super-app née en Colombie et taxis officiels sécurisés</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">📱 Super-App</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Rappi</span>
+                            <span class="app-item-desc">Née en Colombie, cette super-app livre repas, médicaments, courses et fonctionne comme VTC. Omniprésente.</span>
+                        </div>
+                        <a href="https://rappi.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 Taxis Officiels</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Tappsi</span>
+                            <span class="app-item-desc">Taxis jaunes officiels avec suivi GPS et tarifs encadrés. Très sécurisé pour se déplacer seul ou en famille.</span>
+                        </div>
+                        <a href="https://tappsi.co" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ÉQUATEUR & PÉROU -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇪🇨🇵🇪</span>
+            <div>
+                <h2 class="country-name">Équateur & Pérou</h2>
+                <p class="country-desc">Naviguer le chaos des transports avec les apps locales</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚌 Bus Urbains</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">TuRuta (Pérou)</span>
+                            <span class="app-item-desc">Indispensable à Lima pour identifier quel "Combi" prendre. Cartographie le réseau complexe de minibus.</span>
+                        </div>
+                        <a href="https://turuta.pe" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 VTC Sécurisé</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Nekso (Équateur)</span>
+                            <span class="app-item-desc">Plateforme de taxi avec partage de localisation en temps réel pour voyager en toute sérénité.</span>
+                        </div>
+                        <a href="https://nekso.io" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOLIVIE -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇧🇴</span>
+            <div>
+                <h2 class="country-name">Bolivie</h2>
+                <p class="country-desc">VTC et bus longue distance en altitude</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 VTC</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Yango</span>
+                            <span class="app-item-desc">L'application VTC la plus dynamique à La Paz et Santa Cruz. Fiable pour éviter les taxis sans licence.</span>
+                        </div>
+                        <a href="https://yango.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚌 Bus Longue Distance</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">RedBus Bolivia</span>
+                            <span class="app-item-desc">Réservez vos bus inter-villes sans passer des heures au terminal. Comparaison des opérateurs et horaires.</span>
+                        </div>
+                        <a href="https://www.redbus.pe" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BRÉSIL -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇧🇷</span>
+            <div>
+                <h2 class="country-name">Brésil</h2>
+                <p class="country-desc">Le géant local et navigation dans les méga-villes</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 VTC Local</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">99 (99Taxi)</span>
+                            <span class="app-item-desc">Le géant brésilien, souvent avec plus de chauffeurs qu'Uber. Options taxis officiels et motos-taxis disponibles.</span>
+                        </div>
+                        <a href="https://99app.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚇 Transport Urbain</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Moovit</span>
+                            <span class="app-item-desc">L'outil le plus précis pour cartographier les réseaux de bus complexes à Rio et São Paulo.</span>
+                        </div>
+                        <a href="https://moovitapp.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHILI -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇨🇱</span>
+            <div>
+                <h2 class="country-name">Chili</h2>
+                <p class="country-desc">Santiago et les bus du pays le plus long du monde</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚇 Santiago</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Red Metropolitana</span>
+                            <span class="app-item-desc">Indispensable à Santiago : planifiez votre trajet et payez bus/métro via QR Code (Bip! QR) sans ticket physique.</span>
+                        </div>
+                        <a href="https://www.red.cl" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚌 Bus Longue Distance</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Recorrido.cl</span>
+                            <span class="app-item-desc">Le meilleur comparateur pour traverser le Chili du Nord au Sud. Comparez prix et confort des opérateurs.</span>
+                        </div>
+                        <a href="https://recorrido.cl" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ARGENTINE & URUGUAY -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇦🇷🇺🇾</span>
+            <div>
+                <h2 class="country-name">Argentine & Uruguay</h2>
+                <p class="country-desc">Paiements numériques et transport dans le Cône Sud</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">💳 Paiement</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Mercado Pago</span>
+                            <span class="app-item-desc">Le portefeuille numérique leader. Essentiel en Argentine pour payer par QR Code dans quasiment tous les commerces.</span>
+                        </div>
+                        <a href="https://mercadopago.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚌 Transport Urbain</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">BA Cómo Llego</span>
+                            <span class="app-item-desc">La boussole officielle pour les transports de Buenos Aires (bus, métro, train) avec temps d'attente en direct.</span>
+                        </div>
+                        <a href="https://comollego.ba.gov.ar" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">STM Montevideo</span>
+                            <span class="app-item-desc">L'équivalent uruguayen pour naviguer le réseau de bus de Montevideo avec facilité.</span>
+                        </div>
+                        <a href="https://www.montevideo.gub.uy/aplicaciones/stm-montevideo" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 VTC</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Cabify / BA Taxi</span>
+                            <span class="app-item-desc">Cabify pour les VTC sécurisés, BA Taxi pour les taxis officiels de Buenos Aires avec prix estimé à l'avance.</span>
+                        </div>
+                        <a href="https://cabify.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARAGUAY -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇵🇾</span>
+            <div>
+                <h2 class="country-name">Paraguay</h2>
+                <p class="country-desc">VTC locaux à prix compétitifs à Asunción</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 VTC</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">MUV</span>
+                            <span class="app-item-desc">La réponse paraguayenne à Uber. L'application de transport la plus populaire et mieux notée à Asunción.</span>
+                        </div>
+                        <a href="https://muv-app.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Bolt</span>
+                            <span class="app-item-desc">Alternative très agressive sur les prix, très répandue dans tout le pays. Souvent plus rapide qu'Uber.</span>
+                        </div>
+                        <a href="https://bolt.eu" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VENEZUELA -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇻🇪</span>
+            <div>
+                <h2 class="country-name">Venezuela</h2>
+                <p class="country-desc">VTC certifiés pour se déplacer en sécurité à Caracas</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 VTC Certifié</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Ridery</span>
+                            <span class="app-item-desc">La première application VTC du pays. Indispensable pour se déplacer en sécurité à Caracas avec chauffeurs certifiés.</span>
+                        </div>
+                        <a href="https://ridery.app" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GUYANA & SURINAME -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇬🇾🇸🇷</span>
+            <div>
+                <h2 class="country-name">Guyana & Suriname</h2>
+                <p class="country-desc">Transport fiable dans les Guyanes souvent oubliées</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚕 VTC Local</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Book A Ride (Guyana)</span>
+                            <span class="app-item-desc">L'outil principal pour commander un véhicule à Georgetown sans négocier dans la rue.</span>
+                        </div>
+                        <a href="https://bookargyde.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Suriname Taxi App</span>
+                            <span class="app-item-desc">Service fiable pour commander un taxi à Paramaribo avec tarification claire et chauffeurs vérifiés.</span>
+                        </div>
+                        <a href="https://surinameride.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OUTILS TRANSVERSAUX LATAM -->
+    <div class="country-block tip-block">
+        <div class="country-header">
+            <span class="country-flag">💡</span>
+            <div>
+                <h2 class="country-name">Outils Transversaux Amérique Latine</h2>
+                <p class="country-desc">Essentiels dans tous les pays du continent</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🗺 Navigation Hors-Ligne</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Maps.me</span>
+                            <span class="app-item-desc">Cartes hors-ligne précises. Essentiel dans les parcs nationaux et zones reculées sans connexion internet.</span>
+                        </div>
+                        <a href="https://maps.me" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚌 Bus Longue Distance</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Busbud / CheckMyBus</span>
+                            <span class="app-item-desc">Comparateurs internationaux pour les bus longue distance. Indispensables pour comparer prix et horaires entre pays.</span>
+                        </div>
+                        <a href="https://www.busbud.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">💬 Communication</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">WhatsApp</span>
+                            <span class="app-item-desc">L'outil de réservation de facto dans TOUS les pays d'Amérique Latine. Restaurants, hôtels, guides — tout passe par WhatsApp.</span>
+                        </div>
+                        <a href="https://www.whatsapp.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /countries-wrapper latam -->
+</div><!-- /continent-latam -->
+
+<!-- NORTH AMERICA -->
+<div id="continent-northam" class="continent-section" style="display:none;">
+<div class="countries-wrapper">
+
+    <!-- USA -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇺🇸</span>
+            <div>
+                <h2 class="country-name">États-Unis</h2>
+                <p class="country-desc">Parcs nationaux, road-trips et villes américaines</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🏕 Parcs Nationaux</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Recreation.gov</span>
+                            <span class="app-item-desc">Le portail unique pour réserver campings et permis de randonnée dans les parcs fédéraux (Yosemite, Zion, Yellowstone).</span>
+                        </div>
+                        <a href="https://www.recreation.gov" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">NPS App</span>
+                            <span class="app-item-desc">L'outil de terrain officiel des parcs nationaux. Cartes hors-ligne, guides audio et alertes météo en temps réel.</span>
+                        </div>
+                        <a href="https://www.nps.gov/subjects/digital/nps-apps.htm" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚗 Road-Trip</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">GasBuddy</span>
+                            <span class="app-item-desc">Le sauveur de budget road-trip. Compare les prix de l'essence autour de vous — les écarts sont massifs entre stations.</span>
+                        </div>
+                        <a href="https://www.gasbuddy.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Roadtrippers</span>
+                            <span class="app-item-desc">Planificateur spécialisé qui suggère des arrêts insolites et "roadside attractions" ignorés par les GPS classiques.</span>
+                        </div>
+                        <a href="https://roadtrippers.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🍽 Restaurants & Sorties</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Yelp</span>
+                            <span class="app-item-desc">La bible des avis locaux aux USA. Plus fiable que Google Maps pour trouver les vrais bons restaurants locaux.</span>
+                        </div>
+                        <a href="https://www.yelp.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">OpenTable</span>
+                            <span class="app-item-desc">Le standard américain pour réserver sa table instantanément sans appeler. Indispensable dans les grandes villes.</span>
+                        </div>
+                        <a href="https://www.opentable.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚆 Train & VTC</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Amtrak</span>
+                            <span class="app-item-desc">Réservez le train sur la côte Est. Un mode de transport confortable et scénique, idéal pour les familles.</span>
+                        </div>
+                        <a href="https://www.amtrak.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Lyft</span>
+                            <span class="app-item-desc">Alternative à Uber avec meilleur service client dans certaines villes. Prix souvent plus compétitifs.</span>
+                        </div>
+                        <a href="https://www.lyft.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CANADA -->
+    <div class="country-block">
+        <div class="country-header">
+            <span class="country-flag">🇨🇦</span>
+            <div>
+                <h2 class="country-name">Canada</h2>
+                <p class="country-desc">Parcs sauvages, villes multicultureles et météo imprévisible</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">🏕 Parcs Nationaux</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Parks Canada App</span>
+                            <span class="app-item-desc">Explorez Banff, Jasper et la Mauricie avec cartes hors-ligne, infos locales et réservations de campings.</span>
+                        </div>
+                        <a href="https://parks.canada.ca" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚇 Transport Urbain</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Transit App</span>
+                            <span class="app-item-desc">La meilleure app de transport urbain (née à Montréal). Bus, métros et vélos en libre-service avec précision exemplaire.</span>
+                        </div>
+                        <a href="https://transitapp.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🌡 Météo</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">MétéoMédia</span>
+                            <span class="app-item-desc">Indispensable pour anticiper les changements brutaux de température et tempêtes canadiennes. Précision supérieure aux apps globales.</span>
+                        </div>
+                        <a href="https://www.meteomedia.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">✈️ Douanes</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">ArriveCAN</span>
+                            <span class="app-item-desc">Application gouvernementale pour les formalités douanières. Gagnez un temps précieux à l'arrivée dans les grands aéroports.</span>
+                        </div>
+                        <a href="https://www.canada.ca/fr/agence-sante-publique/services/maladies/2019-nouveau-coronavirus/arrivecan.html" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROAD-TRIP & VANLIFE -->
+    <div class="country-block tip-block">
+        <div class="country-header">
+            <span class="country-flag">🚐</span>
+            <div>
+                <h2 class="country-name">Road-Trip & Vanlife</h2>
+                <p class="country-desc">Applications transversales pour les voyageurs en autonomie</p>
+            </div>
+        </div>
+        <div class="app-categories-grid">
+            <div class="app-cat-group">
+                <div class="app-cat-label">⛺ Bivouac & Camping</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">iOverlander</span>
+                            <span class="app-item-desc">La référence pour les voyageurs en autonomie. Spots de bivouac gratuits, douches, points d'eau et mécaniciens recommandés.</span>
+                        </div>
+                        <a href="https://ioverlander.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">The Dyrt</span>
+                            <span class="app-item-desc">Spécialisée dans la recherche de campings privés et publics avec milliers de photos et avis d'utilisateurs.</span>
+                        </div>
+                        <a href="https://thedyrt.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🥾 Randonnée</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">AllTrails</span>
+                            <span class="app-item-desc">La base de données de randonnée la plus complète au monde. Cruciale pour ne pas se perdre sur les sentiers nord-américains.</span>
+                        </div>
+                        <a href="https://www.alltrails.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="app-cat-group">
+                <div class="app-cat-label">🚗 Location de Véhicule</div>
+                <div class="app-list">
+                    <div class="app-item">
+                        <div class="app-item-info">
+                            <span class="app-item-name">Turo</span>
+                            <span class="app-item-desc">Location entre particuliers. Idéal pour un 4x4 ou décapotable souvent moins cher qu'en agence traditionnelle.</span>
+                        </div>
+                        <a href="https://turo.com" target="_blank" class="app-item-btn">Ouvrir →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /countries-wrapper northam -->
+</div><!-- /continent-northam -->
+
+</div><!-- /country-hero page -->
+
+</div><!-- /page-countries -->
 <section class="prompts-section">
     <div class="prompts-inner">
         <div class="prompts-header">
@@ -1003,15 +2126,58 @@
 </footer>
 
 <script>
-    // ── FILTER SYSTEM ──
-    const allTabs = document.querySelectorAll('.nav-tab, .mobile-nav-tab');
+    // ── PAGE SYSTEM (Outils IA ↔ Par Pays) ──
+    const pageTools   = document.getElementById('page-tools');
+    const pageCountries = document.getElementById('page-countries');
 
-    function applyFilter(filter) {
-        allTabs.forEach(t => {
-            const isMatch = t.dataset.filter === filter;
-            t.classList.toggle('active', isMatch);
+    function switchPage(page) {
+        // Update all page buttons (desktop + mobile)
+        document.querySelectorAll('[data-page]').forEach(b => {
+            b.classList.toggle('active', b.dataset.page === page);
         });
+        if (page === 'tools') {
+            pageTools.style.display = '';
+            pageCountries.style.display = 'none';
+        } else {
+            pageTools.style.display = 'none';
+            pageCountries.style.display = '';
+            // Re-run scroll reveal for country blocks
+            document.querySelectorAll('.country-block:not(.visible)').forEach((el, i) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.55s cubic-bezier(0.22,1,0.36,1), transform 0.55s cubic-bezier(0.22,1,0.36,1)';
+                setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'none'; el.classList.add('visible'); }, i * 60);
+            });
+        }
+    }
 
+    document.querySelectorAll('[data-page]').forEach(btn => {
+        btn.addEventListener('click', () => switchPage(btn.dataset.page));
+    });
+
+    // ── CONTINENT TABS ──
+    document.querySelectorAll('.continent-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.continent-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.continent-section').forEach(s => s.style.display = 'none');
+            document.getElementById('continent-' + tab.dataset.continent).style.display = '';
+            // Animate
+            document.querySelectorAll('#continent-' + tab.dataset.continent + ' .country-block').forEach((el, i) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(16px)';
+                setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'none'; }, i * 50);
+            });
+        });
+    });
+
+    function setFilterActive(el) {
+        el.closest('div').querySelectorAll('.continent-tab').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    // ── TOOLS FILTER ──
+    function applyFilter(filter) {
         document.querySelectorAll('.tool-card').forEach(card => {
             const cats = card.dataset.categories || '';
             const show = filter === 'all' || cats.includes(filter);
@@ -1028,13 +2194,9 @@
         });
     }
 
-    allTabs.forEach(tab => {
-        tab.addEventListener('click', () => applyFilter(tab.dataset.filter));
-    });
-
     // ── COPY PROMPT ──
     function copyPrompt(btn) {
-        const text = btn.closest('.prompt-card').querySelector('.prompt-text').innerText.replace(/"/g, '');
+        const text = btn.closest('.prompt-card').querySelector('.prompt-text').innerText.replace(/^"|"$/g, '');
         navigator.clipboard.writeText(text).catch(() => {
             const el = document.createElement('textarea');
             el.value = text;
@@ -1046,10 +2208,7 @@
         const original = btn.innerHTML;
         btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 7L5 10L11 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copié !`;
         btn.classList.add('copied');
-        setTimeout(() => {
-            btn.innerHTML = original;
-            btn.classList.remove('copied');
-        }, 2500);
+        setTimeout(() => { btn.innerHTML = original; btn.classList.remove('copied'); }, 2500);
     }
 
     // ── SCROLL REVEAL ──
@@ -1060,8 +2219,7 @@
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.08 });
-
+    }, { threshold: 0.06 });
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
 </body>
